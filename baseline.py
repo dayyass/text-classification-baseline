@@ -12,17 +12,14 @@ X_test = df_test["Text"]
 y_train = df_train["Class"]
 y_test = df_test["Class"]
 
-
 # TF-IDF
 vectorizer = TfidfVectorizer()
 X_train_tfidf = vectorizer.fit_transform(X_train)
 X_test_tfidf = vectorizer.transform(X_test)
 
-
 # LogReg
 clf = LogisticRegression()
 clf.fit(X_train_tfidf, y_train)
-
 
 # Metrics
 y_pred = clf.predict(X_test_tfidf)
