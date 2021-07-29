@@ -1,0 +1,20 @@
+*.DS_Store
+*.ipynb
+*.ipynb_checkpoints
+
+# cache
+*__pycache__
+**.mypy_cache
+*.cache
+
+# coverage
+*.coverage
+*coverage.xml
+
+venv
+.idea
+dist
+
+src/muse_as_service.egg-info/
+
+data
