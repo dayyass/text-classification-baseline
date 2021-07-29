@@ -17,4 +17,5 @@ dist
 
 src/muse_as_service.egg-info/
 
-data
+data/*
+!data/README.md
