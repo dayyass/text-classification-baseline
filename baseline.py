@@ -1,8 +1,11 @@
+import os
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report
+
+from joblib import dump, load
 
 # Load data
 df_train = pd.read_csv("data/data_train.csv", index_col=0)
@@ -23,6 +26,9 @@ vectorizer = TfidfVectorizer()
 X_train_tfidf = vectorizer.fit_transform(X_train)
 X_test_tfidf = vectorizer.transform(X_test)
 
+# Load Model
+# clf = load('filename.joblib')
+
 # LogReg
 clf = LogisticRegression()
 clf.fit(X_train_tfidf, y_train)
@@ -35,3 +41,13 @@ print(
         y_pred=y_pred,
     )
 )
+
+# Save model
+filename = 'log_reg_tf_idf'
+directory = 'saved_models'
+
+if not os.path.exists(directory):
+    os.makedirs(directory)
+
+path = f'{directory}/{filename}.joblib'
+dump(clf, path)
