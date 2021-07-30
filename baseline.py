@@ -6,7 +6,7 @@ import random
 
 from argparse import ArgumentParser
 
-from sklearn.preprocessing import LabelEncoder
+from sklearn.pipeline import Pipeline
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report
@@ -56,32 +56,26 @@ df_test = pd.read_csv(
     ]
 )
 
+
 X_train = df_train[text_column]
 X_test = df_test[text_column]
 y_train = df_train[target_column]
 y_test = df_test[target_column]
 
-# Label Encoder
-le = LabelEncoder()
-y_train = le.fit_transform(y_train)
-y_test = le.transform(y_test)
+# Pipeline
+model = Pipeline([
+    ('tfidf', TfidfVectorizer()),
+    ('log_reg', LogisticRegression(
+                    n_jobs=config['n_jobs'],
+                    random_state=SEED,
+                )
+     )
+])
 
-# TF-IDF
-vectorizer = TfidfVectorizer()
-X_train_tfidf = vectorizer.fit_transform(X_train)
-X_test_tfidf = vectorizer.transform(X_test)
-
-
-# LogReg
-clf = LogisticRegression(
-    n_jobs=config['n_jobs'],
-    random_state=SEED,
-)
-
-clf.fit(X_train_tfidf, y_train)
+model.fit(X_train, y_train)
 
 # Metrics
-y_pred = clf.predict(X_test_tfidf)
+y_pred = model.predict(X_test)
 print(
     classification_report(
         y_true=y_test,
@@ -97,4 +91,4 @@ if not os.path.exists(directory):
     os.makedirs(directory)
 
 path = f'{directory}/{filename}.joblib'
-dump(clf, path)
+dump(model, path)
