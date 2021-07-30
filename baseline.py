@@ -23,10 +23,8 @@ parser.add_argument(
 
 args = parser.parse_args()
 
-
 # Load config
-path_to_config = 'config.yaml'
-with open(path_to_config, mode="r") as fp:
+with open(args.config, mode="r") as fp:
     config = yaml.safe_load(fp)
 
 # Load data
