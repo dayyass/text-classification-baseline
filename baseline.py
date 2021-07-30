@@ -1,6 +1,8 @@
 import os
 import yaml
 import pandas as pd
+import numpy as np
+import random
 
 from argparse import ArgumentParser
 
@@ -26,6 +28,11 @@ args = parser.parse_args()
 # Load config
 with open(args.config, mode="r") as fp:
     config = yaml.safe_load(fp)
+
+# Reproducibility
+SEED = config['seed']
+random.seed(SEED)
+np.random.seed(SEED)
 
 # Load data
 text_column = config['text_column']
@@ -64,11 +71,13 @@ vectorizer = TfidfVectorizer()
 X_train_tfidf = vectorizer.fit_transform(X_train)
 X_test_tfidf = vectorizer.transform(X_test)
 
-# Load Model
-# clf = load('filename.joblib')
 
 # LogReg
-clf = LogisticRegression()
+clf = LogisticRegression(
+    n_jobs=config['n_jobs'],
+    random_state=SEED,
+)
+
 clf.fit(X_train_tfidf, y_train)
 
 # Metrics
