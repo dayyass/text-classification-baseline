@@ -8,13 +8,13 @@ from sklearn.metrics import classification_report
 from joblib import dump, load
 
 # Load data
-df_train = pd.read_csv("data/data_train.csv", index_col=0)
-df_test = pd.read_csv("data/data_test.csv", index_col=0)
+df_train = pd.read_csv("data/data_train.csv", usecols=['text', 'target'])
+df_test = pd.read_csv("data/data_test.csv", usecols=['text', 'target'])
 
-X_train = df_train["Text"]
-X_test = df_test["Text"]
-y_train = df_train["Class"]
-y_test = df_test["Class"]
+X_train = df_train["text"]
+X_test = df_test["text"]
+y_train = df_train["target"]
+y_test = df_test["target"]
 
 # Label Encoder
 le = LabelEncoder()
