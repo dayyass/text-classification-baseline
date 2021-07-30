@@ -1,12 +1,28 @@
 import os
-import pandas as pd
 import yaml
+import pandas as pd
+
+from argparse import ArgumentParser
+
 from sklearn.preprocessing import LabelEncoder
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report
 
 from joblib import dump, load
+
+# Add ArgumentParser
+parser = ArgumentParser()
+parser.add_argument(
+    "--config",
+    type=str,
+    required=False,
+    default="config.yaml",
+    help="path to config",
+)
+
+args = parser.parse_args()
+
 
 # Load config
 path_to_config = 'config.yaml'
@@ -27,7 +43,7 @@ df_train = pd.read_csv(
 )
 
 df_test = pd.read_csv(
-    config['train_data_path'],
+    config['test_data_path'],
     sep=config['sep'],
     usecols=[
         text_column,
