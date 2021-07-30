@@ -1,4 +1,5 @@
 import pandas as pd
+from sklearn.preprocessing import LabelEncoder
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report
@@ -11,6 +12,11 @@ X_train = df_train["Text"]
 X_test = df_test["Text"]
 y_train = df_train["Class"]
 y_test = df_test["Class"]
+
+# Label Encoder
+le = LabelEncoder()
+y_train = le.fit_transform(y_train)
+y_test = le.transform(y_test)
 
 # TF-IDF
 vectorizer = TfidfVectorizer()
