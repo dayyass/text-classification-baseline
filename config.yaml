@@ -1,0 +1,14 @@
+load_data:
+  train_data:
+    path: "data/data_train.csv"
+    index_col: 0
+  test_data:
+    path: "data/data_test.csv"
+    index_col: 0
+
+select_columns:
+  fulltext: "Text"
+  class_labels: "Class"
+
+save:
+  path_to_folder: 'saved_models/'
