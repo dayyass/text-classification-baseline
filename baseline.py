@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import yaml
 from sklearn.preprocessing import LabelEncoder
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
@@ -7,14 +8,37 @@ from sklearn.metrics import classification_report
 
 from joblib import dump, load
 
-# Load data
-df_train = pd.read_csv("data/data_train.csv", index_col=0)
-df_test = pd.read_csv("data/data_test.csv", index_col=0)
+# Load config
+path_to_config = 'config.yaml'
+with open(path_to_config, mode="r") as fp:
+    config = yaml.safe_load(fp)
 
-X_train = df_train["Text"]
-X_test = df_test["Text"]
-y_train = df_train["Class"]
-y_test = df_test["Class"]
+# Load data
+text_column = config['text_column']
+target_column = config['target_column']
+
+df_train = pd.read_csv(
+    config['train_data_path'],
+    sep=config['sep'],
+    usecols=[
+        text_column,
+        target_column,
+    ]
+)
+
+df_test = pd.read_csv(
+    config['train_data_path'],
+    sep=config['sep'],
+    usecols=[
+        text_column,
+        target_column,
+    ]
+)
+
+X_train = df_train[text_column]
+X_test = df_test[text_column]
+y_train = df_train[target_column]
+y_test = df_test[target_column]
 
 # Label Encoder
 le = LabelEncoder()
@@ -44,7 +68,7 @@ print(
 
 # Save model
 filename = 'log_reg_tf_idf'
-directory = 'saved_models'
+directory = config['path_to_folder']
 
 if not os.path.exists(directory):
     os.makedirs(directory)
