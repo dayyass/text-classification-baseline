@@ -14,28 +14,31 @@ with open(path_to_config, mode="r") as fp:
     config = yaml.safe_load(fp)
 
 # Load data
+text_column = config['text_column']
+target_column = config['target_column']
+
 df_train = pd.read_csv(
-    config['load_data']["train_data"]["path"],
-    sep=config['load_data']['sep'],
+    config['train_data_path'],
+    sep=config['sep'],
     usecols=[
-        config["select_columns"]["text"],
-        config["select_columns"]["target"],
+        text_column,
+        target_column,
     ]
 )
 
 df_test = pd.read_csv(
-    config['load_data']["test_data"]["path"],
-    sep=config['load_data']['sep'],
+    config['train_data_path'],
+    sep=config['sep'],
     usecols=[
-        config["select_columns"]["text"],
-        config["select_columns"]["target"],
+        text_column,
+        target_column,
     ]
 )
 
-X_train = df_train[config["select_columns"]["text"]]
-X_test = df_test[config["select_columns"]["text"]]
-y_train = df_train[config["select_columns"]["target"]]
-y_test = df_test[config["select_columns"]["target"]]
+X_train = df_train[text_column]
+X_test = df_test[text_column]
+y_train = df_train[target_column]
+y_test = df_test[target_column]
 
 # Label Encoder
 le = LabelEncoder()
@@ -65,7 +68,7 @@ print(
 
 # Save model
 filename = 'log_reg_tf_idf'
-directory = config['save']['path_to_folder']
+directory = config['path_to_folder']
 
 if not os.path.exists(directory):
     os.makedirs(directory)
