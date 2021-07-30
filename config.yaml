@@ -1,12 +1,11 @@
 load_data:
+  sep: ','
   train_data:
     path: "data/data_train.csv"
-    usecols: ['text', 'target']
   test_data:
     path: "data/data_test.csv"
-    usecols: ['text', 'target']
 
-select_columns:s
+select_columns:
   text: "text"
   target: "target"
 

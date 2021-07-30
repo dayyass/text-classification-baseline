@@ -1,5 +1,6 @@
 import os
 import pandas as pd
+import yaml
 from sklearn.preprocessing import LabelEncoder
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
@@ -7,14 +8,34 @@ from sklearn.metrics import classification_report
 
 from joblib import dump, load
 
-# Load data
-df_train = pd.read_csv("data/data_train.csv", usecols=['text', 'target'])
-df_test = pd.read_csv("data/data_test.csv", usecols=['text', 'target'])
+# Load config
+path_to_config = 'config.yaml'
+with open(path_to_config, mode="r") as fp:
+    config = yaml.safe_load(fp)
 
-X_train = df_train["text"]
-X_test = df_test["text"]
-y_train = df_train["target"]
-y_test = df_test["target"]
+# Load data
+df_train = pd.read_csv(
+    config['load_data']["train_data"]["path"],
+    sep=config['load_data']['sep'],
+    usecols=[
+        config["select_columns"]["text"],
+        config["select_columns"]["target"],
+    ]
+)
+
+df_test = pd.read_csv(
+    config['load_data']["test_data"]["path"],
+    sep=config['load_data']['sep'],
+    usecols=[
+        config["select_columns"]["text"],
+        config["select_columns"]["target"],
+    ]
+)
+
+X_train = df_train[config["select_columns"]["text"]]
+X_test = df_test[config["select_columns"]["text"]]
+y_train = df_train[config["select_columns"]["target"]]
+y_test = df_test[config["select_columns"]["target"]]
 
 # Label Encoder
 le = LabelEncoder()
@@ -44,7 +65,7 @@ print(
 
 # Save model
 filename = 'log_reg_tf_idf'
-directory = 'saved_models'
+directory = config['save']['path_to_folder']
 
 if not os.path.exists(directory):
     os.makedirs(directory)
