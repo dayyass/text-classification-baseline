@@ -1,19 +1,17 @@
 import os
-import yaml
-import pandas as pd
-import numpy as np
 import random
-
 from argparse import ArgumentParser
 
-from sklearn.preprocessing import LabelEncoder
+import joblib
+import numpy as np
+import pandas as pd
+import yaml
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report
+from sklearn.preprocessing import LabelEncoder
 
-from joblib import dump, load
-
-# Add ArgumentParser
+# argument parser
 parser = ArgumentParser()
 parser.add_argument(
     "--config",
@@ -25,35 +23,35 @@ parser.add_argument(
 
 args = parser.parse_args()
 
-# Load config
+
+# load config
 with open(args.config, mode="r") as fp:
     config = yaml.safe_load(fp)
 
-# Reproducibility
-SEED = config['seed']
+
+# reproducibility
+SEED = config["seed"]
 random.seed(SEED)
 np.random.seed(SEED)
 
-# Load data
-text_column = config['text_column']
-target_column = config['target_column']
+
+# load data
+text_column = config["text_column"]
+target_column = config["target_column"]
+
+sep = config["sep"]
+usecols = [text_column, target_column]
 
 df_train = pd.read_csv(
-    config['train_data_path'],
-    sep=config['sep'],
-    usecols=[
-        text_column,
-        target_column,
-    ]
+    config["train_data_path"],
+    sep=sep,
+    usecols=usecols,
 )
 
 df_test = pd.read_csv(
-    config['test_data_path'],
-    sep=config['sep'],
-    usecols=[
-        text_column,
-        target_column,
-    ]
+    config["test_data_path"],
+    sep=sep,
+    usecols=usecols,
 )
 
 X_train = df_train[text_column]
@@ -61,26 +59,29 @@ X_test = df_test[text_column]
 y_train = df_train[target_column]
 y_test = df_test[target_column]
 
-# Label Encoder
+
+# label encoder
 le = LabelEncoder()
 y_train = le.fit_transform(y_train)
 y_test = le.transform(y_test)
 
-# TF-IDF
+
+# tf-idf
 vectorizer = TfidfVectorizer()
 X_train_tfidf = vectorizer.fit_transform(X_train)
 X_test_tfidf = vectorizer.transform(X_test)
 
 
-# LogReg
+# logreg
 clf = LogisticRegression(
-    n_jobs=config['n_jobs'],
+    n_jobs=config["n_jobs"],
     random_state=SEED,
 )
 
 clf.fit(X_train_tfidf, y_train)
 
-# Metrics
+
+# metrics
 y_pred = clf.predict(X_test_tfidf)
 print(
     classification_report(
@@ -89,12 +90,13 @@ print(
     )
 )
 
-# Save model
-filename = 'log_reg_tf_idf'
-directory = config['path_to_folder']
+
+# save model
+directory = config["path_to_save_folder"]
+filename = config["save_filename"]
 
 if not os.path.exists(directory):
     os.makedirs(directory)
 
-path = f'{directory}/{filename}.joblib'
-dump(clf, path)
+path = os.path.join(directory, filename)
+joblib.dump(clf, path)
