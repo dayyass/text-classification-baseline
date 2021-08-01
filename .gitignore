@@ -19,3 +19,5 @@ src/muse_as_service.egg-info/
 
 data/*
 !data/README.md
+
+models
