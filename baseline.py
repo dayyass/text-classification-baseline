@@ -36,6 +36,8 @@ np.random.seed(SEED)
 
 
 # load data
+print("Loading data...")
+
 text_column = config["text_column"]
 target_column = config["target_column"]
 
@@ -67,12 +69,16 @@ y_test = le.transform(y_test)
 
 
 # tf-idf
+print("Making TF-IDF features...")
+
 vectorizer = TfidfVectorizer()
 X_train_tfidf = vectorizer.fit_transform(X_train)
 X_test_tfidf = vectorizer.transform(X_test)
 
 
 # logreg
+print("Fitting LogReg model...")
+
 clf = LogisticRegression(
     n_jobs=config["n_jobs"],
     random_state=SEED,
@@ -82,6 +88,8 @@ clf.fit(X_train_tfidf, y_train)
 
 
 # metrics
+print("Calculating metrics...")
+
 y_pred = clf.predict(X_test_tfidf)
 print(
     classification_report(
@@ -92,6 +100,8 @@ print(
 
 
 # save model
+print("Saving the model...")
+
 directory = config["path_to_save_folder"]
 filename = config["save_filename"]
 
@@ -100,3 +110,5 @@ if not os.path.exists(directory):
 
 path = os.path.join(directory, filename)
 joblib.dump(clf, path)
+
+print("Done!")
