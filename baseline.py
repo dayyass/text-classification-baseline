@@ -1,3 +1,4 @@
+import json
 import os
 import random
 from argparse import ArgumentParser
@@ -9,6 +10,7 @@ import yaml
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report
+from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import LabelEncoder
 
 # argument parser
@@ -67,34 +69,43 @@ le = LabelEncoder()
 y_train = le.fit_transform(y_train)
 y_test = le.transform(y_test)
 
+target_names = [str(cls) for cls in le.classes_.tolist()]
+target_names_mapping = {i: cls for i, cls in enumerate(target_names)}
+
 
 # tf-idf
-print("Making TF-IDF features...")
-
 vectorizer = TfidfVectorizer()
-X_train_tfidf = vectorizer.fit_transform(X_train)
-X_test_tfidf = vectorizer.transform(X_test)
 
 
 # logreg
-print("Fitting LogReg model...")
-
 clf = LogisticRegression(
     n_jobs=config["n_jobs"],
     random_state=SEED,
 )
 
-clf.fit(X_train_tfidf, y_train)
+
+# pipeline
+print("Fitting LogReg + TF-IDF model...")
+
+pipe = Pipeline(
+    [
+        ("tf-idf", vectorizer),
+        ("log-reg", clf),
+    ]
+)
+
+pipe.fit(X_train, y_train)
 
 
 # metrics
 print("Calculating metrics...")
 
-y_pred = clf.predict(X_test_tfidf)
+y_pred = pipe.predict(X_test)
 print(
     classification_report(
         y_true=y_test,
         y_pred=y_pred,
+        target_names=target_names,
     )
 )
 
@@ -103,12 +114,21 @@ print(
 print("Saving the model...")
 
 directory = config["path_to_save_folder"]
-filename = config["save_filename"]
 
 if not os.path.exists(directory):
     os.makedirs(directory)
 
-path = os.path.join(directory, filename)
-joblib.dump(clf, path)
+filename_with_ext = config["save_filename"]
+path_to_save_model = os.path.join(directory, filename_with_ext)
+
+joblib.dump(pipe, path_to_save_model)
+
+filename, _ = os.path.splitext(filename_with_ext)
+path_to_save_target_names_mapping = os.path.join(
+    directory, f"{filename}_target_names.json"
+)
+
+with open(path_to_save_target_names_mapping, mode="w") as fp:
+    json.dump(target_names_mapping, fp)
 
 print("Done!")
