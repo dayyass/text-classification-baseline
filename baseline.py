@@ -1,3 +1,4 @@
+import json
 import os
 import random
 from argparse import ArgumentParser
@@ -69,6 +70,7 @@ y_train = le.fit_transform(y_train)
 y_test = le.transform(y_test)
 
 target_names = [str(cls) for cls in le.classes_.tolist()]
+target_names_mapping = {i: cls for i, cls in enumerate(target_names)}
 
 
 # tf-idf
@@ -112,12 +114,21 @@ print(
 print("Saving the model...")
 
 directory = config["path_to_save_folder"]
-filename = config["save_filename"]
 
 if not os.path.exists(directory):
     os.makedirs(directory)
 
-path = os.path.join(directory, filename)
-joblib.dump(pipe, path)
+filename_with_ext = config["save_filename"]
+path_to_save_model = os.path.join(directory, filename_with_ext)
+
+joblib.dump(pipe, path_to_save_model)
+
+filename, _ = os.path.splitext(filename_with_ext)
+path_to_save_target_names_mapping = os.path.join(
+    directory, f"{filename}_target_names.json"
+)
+
+with open(path_to_save_target_names_mapping, mode="w") as fp:
+    json.dump(target_names_mapping, fp)
 
 print("Done!")
