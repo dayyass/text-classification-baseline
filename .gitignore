@@ -19,5 +19,6 @@ src/muse_as_service.egg-info/
 
 data/*
 !data/README.md
+!data/fetch_20newsgroups.py
 
 models
