@@ -123,7 +123,7 @@ path_to_save_folder = Path(config["path_to_save_folder"]) / filename
 
 path_to_save_folder.absolute().mkdir(parents=True, exist_ok=True)
 
-path_to_save_model = path_to_save_folder / "pipe.joblib"
+path_to_save_model = path_to_save_folder / "model.joblib"
 path_to_save_target_names_mapping = path_to_save_folder / "target_names.json"
 
 joblib.dump(pipe, path_to_save_model)
