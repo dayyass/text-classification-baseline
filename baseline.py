@@ -1,7 +1,8 @@
+import datetime
 import json
-import os
 import random
 from argparse import ArgumentParser
+from pathlib import Path
 
 import joblib
 import numpy as np
@@ -58,6 +59,9 @@ df_test = pd.read_csv(
     usecols=usecols,
 )
 
+print(f"Train dataset shape: {df_train.shape}")
+print(f"Test dataset shape: {df_test.shape}")
+
 X_train = df_train[text_column]
 X_test = df_test[text_column]
 y_train = df_train[target_column]
@@ -85,7 +89,7 @@ clf = LogisticRegression(
 
 
 # pipeline
-print("Fitting LogReg + TF-IDF model...")
+print("\nFitting LogReg + TF-IDF model...")
 
 pipe = Pipeline(
     [
@@ -98,7 +102,7 @@ pipe.fit(X_train, y_train)
 
 
 # metrics
-print("Calculating metrics...")
+print("\nCalculating metrics...\n")
 
 y_pred = pipe.predict(X_test)
 print(
@@ -111,24 +115,20 @@ print(
 
 
 # save model
-print("Saving the model...")
+print("\nSaving the model...")
 
-directory = config["path_to_save_folder"]
+now = datetime.datetime.now()
+filename = f"model_{now.date()}_{now.time()}"
+path_to_save_folder = Path(config["path_to_save_folder"]) / filename
 
-if not os.path.exists(directory):
-    os.makedirs(directory)
+path_to_save_folder.absolute().mkdir(parents=True, exist_ok=True)
 
-filename_with_ext = config["save_filename"]
-path_to_save_model = os.path.join(directory, filename_with_ext)
+path_to_save_model = path_to_save_folder / "pipe.joblib"
+path_to_save_target_names_mapping = path_to_save_folder / "target_names.json"
 
 joblib.dump(pipe, path_to_save_model)
-
-filename, _ = os.path.splitext(filename_with_ext)
-path_to_save_target_names_mapping = os.path.join(
-    directory, f"{filename}_target_names.json"
-)
 
 with open(path_to_save_target_names_mapping, mode="w") as fp:
     json.dump(target_names_mapping, fp)
 
-print("Done!")
+print("\nDone!")
