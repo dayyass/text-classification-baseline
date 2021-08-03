@@ -100,19 +100,22 @@ clf = LogisticRegression(
 
 
 # pipeline
-print("\nFitting LogReg + TF-IDF model...")
+print("\nFitting TF-IDF + LogReg model...")
 
 pipe = Pipeline(
     [
         ("tf-idf", vectorizer),
         ("logreg", clf),
-    ]
+    ],
+    verbose=config["verbose"],
 )
 
 start_time = time.time()
 pipe.fit(X_train, y_train)
 
-print(f"Fitting time: {(time.time() - start_time):.2f} seconds.")
+print(f"Fitting time: {(time.time() - start_time):.2f} seconds")
+
+print(f"\nTF-IDF number of features: {len(pipe['tf-idf'].vocabulary_)}")
 
 
 # metrics
