@@ -7,7 +7,7 @@ data:
   test_data_path: "data/test.csv"
   sep: ','
   text_column: "text"
-  target_column: "target_name"
+  target_column: "target_name_short"
 
 # tf-idf
 tf_idf:
@@ -21,7 +21,7 @@ logreg:
   penalty: "l2"
   C: 1.0
   class_weight: "balanced"
-  solver: "lbfgs"
+  solver: "saga"
   multi_class: "auto"
   verbose: 0
   n_jobs: -1
