@@ -109,22 +109,37 @@ pipe = Pipeline(
 
 pipe.fit(X_train, y_train)
 
+print("Done!")
+
 
 # metrics
-print("\nCalculating metrics...\n")
+print("\nCalculating metrics...")
 
-y_pred = pipe.predict(X_test)
+print("Train classification report:")
+
+y_pred_train = pipe.predict(X_train)
+print(
+    classification_report(
+        y_true=y_train,
+        y_pred=y_pred_train,
+        target_names=target_names,
+    )
+)
+
+print("Test classification report:")
+
+y_pred_test = pipe.predict(X_test)
 print(
     classification_report(
         y_true=y_test,
-        y_pred=y_pred,
+        y_pred=y_pred_test,
         target_names=target_names,
     )
 )
 
 
 # save model
-print("\nSaving the model...")
+print("Saving the model...")
 
 now = datetime.datetime.now()
 filename = f"model_{now.date()}_{now.time()}"
@@ -140,4 +155,4 @@ joblib.dump(pipe, path_to_save_model)
 with open(path_to_save_target_names_mapping, mode="w") as fp:
     json.dump(target_names_mapping, fp)
 
-print("\nDone!")
+print("Done!")
