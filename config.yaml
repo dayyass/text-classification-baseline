@@ -1,13 +1,30 @@
-# data
-train_data_path: "data/train.csv"
-test_data_path: "data/test.csv"
-sep: ','
-text_column: "text"
-target_column: "target_name"
-
-# model
+# reproducibility
 seed: 42
-n_jobs: -1
+
+# data
+data:
+  train_data_path: "data/train.csv"
+  test_data_path: "data/test.csv"
+  sep: ','
+  text_column: "text"
+  target_column: "target_name"
+
+# tf-idf
+tf_idf:
+  lowercase: True
+  ngram_range: (1, 1)
+  max_df: 1.0
+  min_df: 0.0
+
+# logreg
+logreg:
+  penalty: "l2"
+  C: 1.0
+  class_weight: "balanced"
+  solver: "lbfgs"
+  multi_class: "auto"
+  verbose: 0
+  n_jobs: -1
 
 # save
 path_to_save_folder: "models"
