@@ -1,3 +1,4 @@
+import ast
 import datetime
 import json
 import random
@@ -41,20 +42,20 @@ np.random.seed(SEED)
 # load data
 print("Loading data...")
 
-text_column = config["text_column"]
-target_column = config["target_column"]
+text_column = config["data"]["text_column"]
+target_column = config["data"]["target_column"]
 
-sep = config["sep"]
+sep = config["data"]["sep"]
 usecols = [text_column, target_column]
 
 df_train = pd.read_csv(
-    config["train_data_path"],
+    config["data"]["train_data_path"],
     sep=sep,
     usecols=usecols,
 )
 
 df_test = pd.read_csv(
-    config["test_data_path"],
+    config["data"]["test_data_path"],
     sep=sep,
     usecols=usecols,
 )
@@ -78,12 +79,20 @@ target_names_mapping = {i: cls for i, cls in enumerate(target_names)}
 
 
 # tf-idf
-vectorizer = TfidfVectorizer()
+if ("tf_idf" not in config) or (config["tf_idf"] is None):
+    config["tf_idf"] = {}
+if "ngram_range" in config["tf_idf"]:
+    config["tf_idf"]["ngram_range"] = ast.literal_eval(config["tf_idf"]["ngram_range"])
+
+vectorizer = TfidfVectorizer(**config["tf_idf"])
 
 
 # logreg
+if ("logreg" not in config) or (config["logreg"] is None):
+    config["logreg"] = {}
+
 clf = LogisticRegression(
-    n_jobs=config["n_jobs"],
+    **config["logreg"],
     random_state=SEED,
 )
 
