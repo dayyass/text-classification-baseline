@@ -5,7 +5,7 @@ seed: 42
 data:
   train_data_path: "data/train.csv"
   test_data_path: "data/test.csv"
-  sep: ','
+  sep: ","
   text_column: "text"
   target_column: "target_name_short"
 
