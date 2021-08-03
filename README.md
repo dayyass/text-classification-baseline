@@ -1,5 +1,9 @@
-### TF-IDF + LogReg baseline
-TODO
+### Text Classification Baseline
+Pipeline for building text classification **TF-IDF + LogReg** baselines using **sklearn**.
+
+Instead of writing custom code for specific text classification task, you just need to write 2 lines of code:
+- `pip install text-classification-baseline` to install pipeline
+- `python baseline.py` to run pipeline
 
 ### Installation
 `
@@ -19,9 +23,10 @@ python baseline.py --config config.yaml
 List of implemented models:
 - [x] TF-IDF + LogReg
 - [ ] TF-IDF + NaiveBayes
+- [ ] TF-IDF + KNN
 
 ### Requirements
-TODO
+Python >= 3.7
 
 ### Citation
 If you use **text-classification-baseline** in a scientific publication, we would appreciate references to the following BibTex entry:
