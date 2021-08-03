@@ -2,6 +2,7 @@ import ast
 import datetime
 import json
 import random
+import shutil
 import time
 from argparse import ArgumentParser
 from pathlib import Path
@@ -147,14 +148,20 @@ now = datetime.datetime.now()
 filename = f"model_{now.date()}_{now.time()}"
 path_to_save_folder = Path(config["path_to_save_folder"]) / filename
 
+# make dirs if not exist
 path_to_save_folder.absolute().mkdir(parents=True, exist_ok=True)
 
 path_to_save_model = path_to_save_folder / "model.joblib"
 path_to_save_target_names_mapping = path_to_save_folder / "target_names.json"
 
+# save pipe
 joblib.dump(pipe, path_to_save_model)
 
+# save target names mapping
 with open(path_to_save_target_names_mapping, mode="w") as fp:
     json.dump(target_names_mapping, fp)
+
+# save config
+shutil.copy2(args.config, path_to_save_folder)
 
 print("Done!")
