@@ -80,12 +80,12 @@ target_names_mapping = {i: cls for i, cls in enumerate(target_names)}
 
 
 # tf-idf
-if ("tf_idf" not in config) or (config["tf_idf"] is None):
-    config["tf_idf"] = {}
-if "ngram_range" in config["tf_idf"]:
-    config["tf_idf"]["ngram_range"] = ast.literal_eval(config["tf_idf"]["ngram_range"])
+if ("tf-idf" not in config) or (config["tf-idf"] is None):
+    config["tf-idf"] = {}
+if "ngram_range" in config["tf-idf"]:
+    config["tf-idf"]["ngram_range"] = ast.literal_eval(config["tf-idf"]["ngram_range"])
 
-vectorizer = TfidfVectorizer(**config["tf_idf"])
+vectorizer = TfidfVectorizer(**config["tf-idf"])
 
 
 # logreg
@@ -104,7 +104,7 @@ print("\nFitting LogReg + TF-IDF model...")
 pipe = Pipeline(
     [
         ("tf-idf", vectorizer),
-        ("log-reg", clf),
+        ("logreg", clf),
     ]
 )
 

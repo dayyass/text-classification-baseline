@@ -10,7 +10,7 @@ data:
   target_column: "target_name_short"
 
 # tf-idf
-tf_idf:
+tf-idf:
   lowercase: True
   ngram_range: (1, 1)
   max_df: 1.0
