@@ -2,6 +2,7 @@ import ast
 import datetime
 import json
 import random
+import time
 from argparse import ArgumentParser
 from pathlib import Path
 
@@ -107,9 +108,10 @@ pipe = Pipeline(
     ]
 )
 
+start_time = time.time()
 pipe.fit(X_train, y_train)
 
-print("Done!")
+print(f"Fitting time: {(time.time() - start_time):.2f} seconds.")
 
 
 # metrics
