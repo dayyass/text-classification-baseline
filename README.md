@@ -26,7 +26,7 @@ Python >= 3.7
 ### Citation
 If you use **text-classification-baseline** in a scientific publication, we would appreciate references to the following BibTex entry:
 ```bibtex
-@misc{dayyass2021textclassification,
+@misc{dayyass2021textclf,
     author       = {El-Ayyass, Dani},
     title        = {Pipeline for training text classification baselines},
     howpublished = {\url{https://github.com/dayyass/text-classification-baseline}},
