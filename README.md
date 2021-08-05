@@ -5,11 +5,6 @@ Instead of writing custom code for specific text classification task, you just n
 - `pip install text-classification-baseline` to install pipeline
 - `python baseline.py` to run pipeline
 
-### Installation
-`
-pip install text-classification-baseline
-`
-
 ### Usage
 The user interface consists of only one file [**config.yaml**](https://github.com/dayyass/text-classification-baseline/blob/main/config.yaml).
 
@@ -31,7 +26,7 @@ Python >= 3.7
 ### Citation
 If you use **text-classification-baseline** in a scientific publication, we would appreciate references to the following BibTex entry:
 ```bibtex
-@misc{dayyass2021textclassification,
+@misc{dayyass2021textclf,
     author       = {El-Ayyass, Dani},
     title        = {Pipeline for training text classification baselines},
     howpublished = {\url{https://github.com/dayyass/text-classification-baseline}},
