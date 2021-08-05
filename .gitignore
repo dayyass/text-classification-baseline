@@ -22,4 +22,5 @@ data/*
 !data/README.md
 !data/fetch_20newsgroups.py
 
-models
+models/*
+!models/README.md
