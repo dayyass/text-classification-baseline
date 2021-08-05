@@ -9,7 +9,7 @@ Instead of writing custom code for specific text classification task, you just n
 The user interface consists of only one file [**config.yaml**](https://github.com/dayyass/text-classification-baseline/blob/main/config.yaml).
 
 Change [**config.yaml**](https://github.com/dayyass/text-classification-baseline/blob/main/config.yaml) to create the desired configuration and train text classification model with the following command:
-```python3
+```
 python baseline.py --config config.yaml
 ```
 **NOTE**: if **--config** argument is not specified, then [**config.yaml**](https://github.com/dayyass/text-classification-baseline/blob/main/config.yaml) is used.
