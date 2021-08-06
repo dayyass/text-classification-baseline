@@ -5,7 +5,7 @@
 
 # cache
 *__pycache__
-**.mypy_cache
+*.mypy_cache
 *.cache
 
 # coverage
