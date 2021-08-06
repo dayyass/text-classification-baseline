@@ -6,6 +6,7 @@ import shutil
 import time
 from argparse import ArgumentParser
 from pathlib import Path
+from typing import Any, Dict, Tuple
 
 import joblib
 import numpy as np
@@ -18,9 +19,14 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import LabelEncoder
 
 
-def main() -> int:
+def get_argparse() -> ArgumentParser:
+    """
+    Get argument parser.
 
-    # argument parser
+    :return: argument parser.
+    :rtype: ArgumentParser
+    """
+
     parser = ArgumentParser(prog="text-clf")
     parser.add_argument(
         "--config",
@@ -30,19 +36,45 @@ def main() -> int:
         help="Path to config",
     )
 
-    args = parser.parse_args()
+    return parser
 
-    # load config
-    with open(args.config, mode="r") as fp:
+
+def get_config(path_to_config: str) -> Dict[str, Any]:
+    """
+    Get config.
+
+    :param str path_to_config: path to config.
+    :return: config.
+    :rtype: Dict[str, Any]
+    """
+
+    with open(path_to_config, mode="r") as fp:
         config = yaml.safe_load(fp)
 
-    # reproducibility
-    SEED = config["seed"]
-    random.seed(SEED)
-    np.random.seed(SEED)
+    return config
 
-    # load data
-    print("Loading data...")
+
+def set_seed(seed: int) -> None:
+    """
+    Set seed for reproducibility.
+
+    :param int seed: seed.
+    """
+
+    random.seed(seed)
+    np.random.seed(seed)
+
+
+def load_data(
+    config: Dict[str, Any]
+) -> Tuple[pd.Series, pd.Series, pd.Series, pd.Series]:
+    """
+    Load data.
+
+    :param Dict[str, Any] config: config.
+    :return: X_train, X_test, y_train, y_test.
+    :rtype: Tuple[pd.Series, pd.Series, pd.Series, pd.Series]
+    """
 
     text_column = config["data"]["text_column"]
     target_column = config["data"]["target_column"]
@@ -62,13 +94,76 @@ def main() -> int:
         usecols=usecols,
     )
 
-    print(f"Train dataset shape: {df_train.shape}")
-    print(f"Test dataset shape: {df_test.shape}")
-
     X_train = df_train[text_column]
     X_test = df_test[text_column]
     y_train = df_train[target_column]
     y_test = df_test[target_column]
+
+    return X_train, X_test, y_train, y_test
+
+
+def save_model(
+    pipe: Pipeline,
+    target_names_mapping: Dict[int, str],
+    config: Dict[str, Any],
+    path_to_config: str,
+) -> None:
+    """
+    Save model pipeline (tf-idf + model), target names mapping and config.
+
+    :param Pipeline pipe: model pipeline (tf-idf + model).
+    :param Dict[int, str] target_names_mapping: name for each class.
+    :param Dict[str, Any] config: config.
+    :param str path_to_config: path to config.
+    :return:
+    """
+
+    now = datetime.datetime.now()
+    filename = f"model_{now.date()}_{now.time()}"
+    path_to_save_folder = Path(config["path_to_save_folder"]) / filename
+
+    # make dirs if not exist
+    path_to_save_folder.absolute().mkdir(parents=True, exist_ok=True)
+
+    path_to_save_model = path_to_save_folder / "model.joblib"
+    path_to_save_target_names_mapping = path_to_save_folder / "target_names.json"
+
+    # save pipe
+    joblib.dump(pipe, path_to_save_model)
+
+    # save target names mapping
+    with open(path_to_save_target_names_mapping, mode="w") as fp:
+        json.dump(target_names_mapping, fp)
+
+    # save config
+    shutil.copy2(path_to_config, path_to_save_folder)
+
+
+def main() -> int:
+    """
+    Main function to train baseline model.
+
+    :return: exit code.
+    :rtype: int
+    """
+
+    # argument parser
+    parser = get_argparse()
+    args = parser.parse_args()
+
+    # load config
+    config = get_config(args.config)
+
+    # reproducibility
+    set_seed(config["seed"])
+
+    # load data
+    print("Loading data...")
+
+    X_train, X_test, y_train, y_test = load_data(config)
+
+    print(f"Train dataset size: {X_train.shape[0]}")
+    print(f"Test dataset size: {X_test.shape[0]}")
 
     # label encoder
     le = LabelEncoder()
@@ -94,7 +189,7 @@ def main() -> int:
 
     clf = LogisticRegression(
         **config["logreg"],
-        random_state=SEED,
+        random_state=config["seed"],
     )
 
     # pipeline
@@ -143,25 +238,12 @@ def main() -> int:
     # save model
     print("Saving the model...")
 
-    now = datetime.datetime.now()
-    filename = f"model_{now.date()}_{now.time()}"
-    path_to_save_folder = Path(config["path_to_save_folder"]) / filename
-
-    # make dirs if not exist
-    path_to_save_folder.absolute().mkdir(parents=True, exist_ok=True)
-
-    path_to_save_model = path_to_save_folder / "model.joblib"
-    path_to_save_target_names_mapping = path_to_save_folder / "target_names.json"
-
-    # save pipe
-    joblib.dump(pipe, path_to_save_model)
-
-    # save target names mapping
-    with open(path_to_save_target_names_mapping, mode="w") as fp:
-        json.dump(target_names_mapping, fp)
-
-    # save config
-    shutil.copy2(args.config, path_to_save_folder)
+    save_model(
+        pipe=pipe,
+        target_names_mapping=target_names_mapping,
+        config=config,
+        path_to_config=args.config,
+    )
 
     print("Done!")
 
