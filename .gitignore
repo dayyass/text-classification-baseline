@@ -16,7 +16,7 @@ venv
 .idea
 dist
 
-src/muse_as_service.egg-info/
+*.egg-info/
 
 data/*
 !data/README.md
