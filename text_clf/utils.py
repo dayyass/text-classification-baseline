@@ -80,22 +80,25 @@ def get_logger(path_to_logfile: str) -> logging.Logger:
     """
 
     logger = logging.getLogger("text-clf")
+    logger.setLevel(logging.INFO)
 
     # create handlers
-    c_handler = logging.StreamHandler(sys.stdout)
-    f_handler = logging.FileHandler(path_to_logfile)
-    c_handler.setLevel(logging.INFO)
-    f_handler.setLevel(logging.INFO)
+    stream_handler = logging.StreamHandler(sys.stdout)
+    file_handler = logging.FileHandler(path_to_logfile)
+    stream_handler.setLevel(logging.INFO)
+    file_handler.setLevel(logging.INFO)
 
     # create formatters and add it to handlers
-    c_format = logging.Formatter("%(name)s - %(levelname)s - %(message)s")
-    f_format = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-    c_handler.setFormatter(c_format)
-    f_handler.setFormatter(f_format)
+    stream_format = logging.Formatter("%(name)s - %(levelname)s - %(message)s")
+    file_format = logging.Formatter(
+        "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    )
+    stream_handler.setFormatter(stream_format)
+    file_handler.setFormatter(file_format)
 
     # add handlers to the logger
-    logger.addHandler(c_handler)
-    logger.addHandler(f_handler)
+    logger.addHandler(stream_handler)
+    logger.addHandler(file_handler)
 
     return logger
 
