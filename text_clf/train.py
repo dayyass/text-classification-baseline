@@ -14,7 +14,7 @@ from sklearn.metrics import classification_report
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import LabelEncoder
 
-from .utils import get_argparse, get_config, set_seed
+from .utils import set_seed
 
 
 def load_data(
@@ -58,7 +58,6 @@ def save_model(
     pipe: Pipeline,
     target_names_mapping: Dict[int, str],
     config: Dict[str, Any],
-    path_to_config: str,
 ) -> None:
     """
     Save model pipeline (tf-idf + model), target names mapping and config.
@@ -66,7 +65,6 @@ def save_model(
     :param Pipeline pipe: model pipeline (tf-idf + model).
     :param Dict[int, str] target_names_mapping: name for each class.
     :param Dict[str, Any] config: config.
-    :param str path_to_config: path to config.
     :return:
     """
 
@@ -88,23 +86,15 @@ def save_model(
         json.dump(target_names_mapping, fp)
 
     # save config
-    shutil.copy2(path_to_config, path_to_save_folder)
+    shutil.copy2(config["path_to_config"], path_to_save_folder)
 
 
-def main() -> int:
+def train(config: Dict[str, Any]) -> None:
     """
-    Main function to train baseline model.
+    Function to train baseline model.
 
-    :return: exit code.
-    :rtype: int
+    :param Dict[str, Any] config: config.
     """
-
-    # argument parser
-    parser = get_argparse()
-    args = parser.parse_args()
-
-    # load config
-    config = get_config(args.config)
 
     # reproducibility
     set_seed(config["seed"])
@@ -194,13 +184,6 @@ def main() -> int:
         pipe=pipe,
         target_names_mapping=target_names_mapping,
         config=config,
-        path_to_config=args.config,
     )
 
     print("Done!")
-
-    return 0
-
-
-if __name__ == "__main__":
-    exit(main())
