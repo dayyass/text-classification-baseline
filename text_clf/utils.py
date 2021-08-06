@@ -50,7 +50,7 @@ def get_config(path_to_config: str) -> Dict[str, Any]:
 
     config["path_to_config"] = path_to_config
     config["path_to_save_model"] = config["path_to_save_folder"] / "model.joblib"
-    config["path_to_save_logfile"] = config["path_to_save_folder"] / "text-clf.log"
+    config["path_to_save_logfile"] = config["path_to_save_folder"] / "logging.txt"
     config["path_to_save_target_names_mapping"] = (
         config["path_to_save_folder"] / "target_names.json"
     )
