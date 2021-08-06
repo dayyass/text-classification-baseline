@@ -14,12 +14,6 @@ python baseline.py --config config.yaml
 ```
 **NOTE**: if **--config** argument is not specified, then [**config.yaml**](https://github.com/dayyass/text-classification-baseline/blob/main/config.yaml) is used.
 
-### Models
-List of implemented models:
-- [x] TF-IDF + LogReg
-- [ ] TF-IDF + NaiveBayes
-- [ ] TF-IDF + KNN
-
 ### Requirements
 Python >= 3.7
 
