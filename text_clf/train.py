@@ -14,7 +14,7 @@ from sklearn.metrics import classification_report
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import LabelEncoder
 
-from .utils import set_seed
+from .utils import get_config, set_seed
 
 
 def load_data(
@@ -89,12 +89,16 @@ def save_model(
     shutil.copy2(config["path_to_config"], path_to_save_folder)
 
 
-def train(config: Dict[str, Any]) -> None:
+def train(path_to_config: str) -> None:
     """
     Function to train baseline model.
 
-    :param Dict[str, Any] config: config.
+    :param str path_to_config: path to config.
     """
+
+    # load config
+    config = get_config(path_to_config)
+    config["path_to_config"] = path_to_config
 
     # reproducibility
     set_seed(config["seed"])

@@ -1,5 +1,5 @@
 from .train import train
-from .utils import get_argparse, get_config
+from .utils import get_argparse
 
 
 def main() -> int:
@@ -14,12 +14,8 @@ def main() -> int:
     parser = get_argparse()
     args = parser.parse_args()
 
-    # load config
-    config = get_config(args.config)
-    config["path_to_config"] = args.config
-
     # train
-    train(config)
+    train(path_to_config=args.config)
 
     return 0
 
