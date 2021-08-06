@@ -56,7 +56,7 @@ def train(path_to_config: str) -> None:
     )
 
     # pipeline
-    logger.info("\nFitting TF-IDF + LogReg model...")
+    logger.info("Fitting TF-IDF + LogReg model...")
 
     pipe = Pipeline(
         [
@@ -71,32 +71,28 @@ def train(path_to_config: str) -> None:
 
     logger.info(f"Fitting time: {(time.time() - start_time):.2f} seconds")
 
-    logger.info(f"\nTF-IDF number of features: {len(pipe['tf-idf'].vocabulary_)}")
+    logger.info(f"TF-IDF number of features: {len(pipe['tf-idf'].vocabulary_)}")
 
     # metrics
-    logger.info("\nCalculating metrics...")
-
-    logger.info("Train classification report:")
+    logger.info("Calculating metrics...")
 
     y_pred_train = pipe.predict(X_train)
-    logger.info(
-        classification_report(
-            y_true=y_train,
-            y_pred=y_pred_train,
-            target_names=target_names,
-        )
+    classification_report_train = classification_report(
+        y_true=y_train,
+        y_pred=y_pred_train,
+        target_names=target_names,
     )
 
-    logger.info("Valid classification report:")
+    logger.info(f"Train classification report:\n{classification_report_train}")
 
     y_pred_valid = pipe.predict(X_valid)
-    logger.info(
-        classification_report(
-            y_true=y_valid,
-            y_pred=y_pred_valid,
-            target_names=target_names,
-        )
+    classification_report_valid = classification_report(
+        y_true=y_valid,
+        y_pred=y_pred_valid,
+        target_names=target_names,
     )
+
+    logger.info(f"Valid classification report:\n{classification_report_valid}")
 
     # save model
     logger.info("Saving the model...")
