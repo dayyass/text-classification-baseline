@@ -1,5 +1,7 @@
 import datetime
+import logging
 import random
+import sys
 from argparse import ArgumentParser
 from pathlib import Path
 from typing import Any, Dict
@@ -53,6 +55,36 @@ def get_config(path_to_config: str) -> Dict[str, Any]:
     )
 
     return config
+
+
+def get_logger(path_to_logfile: str) -> logging.Logger:
+    """
+    Get logger.
+
+    :param str path_to_logfile: path to logfile.
+    :return: logger.
+    :rtype: logging.Logger
+    """
+
+    logger = logging.getLogger("text-clf")
+
+    # create handlers
+    c_handler = logging.StreamHandler(sys.stdout)
+    f_handler = logging.FileHandler(path_to_logfile)
+    c_handler.setLevel(logging.INFO)
+    f_handler.setLevel(logging.INFO)
+
+    # create formatters and add it to handlers
+    c_format = logging.Formatter("%(name)s - %(levelname)s - %(message)s")
+    f_format = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+    c_handler.setFormatter(c_format)
+    f_handler.setFormatter(f_format)
+
+    # add handlers to the logger
+    logger.addHandler(c_handler)
+    logger.addHandler(f_handler)
+
+    return logger
 
 
 def set_seed(seed: int) -> None:
