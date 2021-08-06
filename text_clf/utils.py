@@ -1,3 +1,4 @@
+import ast
 import datetime
 import logging
 import random
@@ -53,6 +54,18 @@ def get_config(path_to_config: str) -> Dict[str, Any]:
     config["path_to_save_target_names_mapping"] = (
         config["path_to_save_folder"] / "target_names.json"
     )
+
+    # tf-idf
+    if ("tf-idf" not in config) or (config["tf-idf"] is None):
+        config["tf-idf"] = {}
+    if "ngram_range" in config["tf-idf"]:
+        config["tf-idf"]["ngram_range"] = ast.literal_eval(
+            config["tf-idf"]["ngram_range"]
+        )
+
+    # logreg
+    if ("logreg" not in config) or (config["logreg"] is None):
+        config["logreg"] = {}
 
     return config
 
