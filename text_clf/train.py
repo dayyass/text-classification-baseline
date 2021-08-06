@@ -21,8 +21,11 @@ def train(path_to_config: str) -> None:
     # load config
     config = get_config(path_to_config)
 
+    # mkdir if not exists
+    config["path_to_save_folder"].absolute().mkdir(parents=True, exist_ok=True)
+
     # get logger
-    logger = get_logger(config["path_to_logfile"])
+    logger = get_logger(config["path_to_save_logfile"])
 
     # reproducibility
     set_seed(config["seed"])

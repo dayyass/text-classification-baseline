@@ -20,9 +20,6 @@ def save_model(
     :return:
     """
 
-    # make dirs if not exist
-    config["path_to_save_folder"].absolute().mkdir(parents=True, exist_ok=True)
-
     # save pipe
     joblib.dump(pipe, config["path_to_save_model"])
 
