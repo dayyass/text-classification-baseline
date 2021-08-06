@@ -1,92 +1,14 @@
-import ast
-import datetime
-import json
-import shutil
 import time
-from pathlib import Path
-from typing import Any, Dict, Tuple
 
-import joblib
-import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import LabelEncoder
 
-from .utils import get_config, set_seed
-
-
-def load_data(
-    config: Dict[str, Any]
-) -> Tuple[pd.Series, pd.Series, pd.Series, pd.Series]:
-    """
-    Load data.
-
-    :param Dict[str, Any] config: config.
-    :return: X_train, X_valid, y_train, y_valid.
-    :rtype: Tuple[pd.Series, pd.Series, pd.Series, pd.Series]
-    """
-
-    text_column = config["data"]["text_column"]
-    target_column = config["data"]["target_column"]
-
-    sep = config["data"]["sep"]
-    usecols = [text_column, target_column]
-
-    df_train = pd.read_csv(
-        config["data"]["train_data_path"],
-        sep=sep,
-        usecols=usecols,
-    )
-
-    df_valid = pd.read_csv(
-        config["data"]["valid_data_path"],
-        sep=sep,
-        usecols=usecols,
-    )
-
-    X_train = df_train[text_column]
-    X_valid = df_valid[text_column]
-    y_train = df_train[target_column]
-    y_valid = df_valid[target_column]
-
-    return X_train, X_valid, y_train, y_valid
-
-
-def save_model(
-    pipe: Pipeline,
-    target_names_mapping: Dict[int, str],
-    config: Dict[str, Any],
-) -> None:
-    """
-    Save model pipeline (tf-idf + model), target names mapping and config.
-
-    :param Pipeline pipe: model pipeline (tf-idf + model).
-    :param Dict[int, str] target_names_mapping: name for each class.
-    :param Dict[str, Any] config: config.
-    :return:
-    """
-
-    now = datetime.datetime.now()
-    filename = f"model_{now.date()}_{now.time()}"
-    path_to_save_folder = Path(config["path_to_save_folder"]) / filename
-
-    # make dirs if not exist
-    path_to_save_folder.absolute().mkdir(parents=True, exist_ok=True)
-
-    path_to_save_model = path_to_save_folder / "model.joblib"
-    path_to_save_target_names_mapping = path_to_save_folder / "target_names.json"
-
-    # save pipe
-    joblib.dump(pipe, path_to_save_model)
-
-    # save target names mapping
-    with open(path_to_save_target_names_mapping, mode="w") as fp:
-        json.dump(target_names_mapping, fp)
-
-    # save config
-    shutil.copy2(config["path_to_config"], path_to_save_folder)
+from .data import load_data
+from .save import save_model
+from .utils import get_config, get_logger, set_seed
 
 
 def train(path_to_config: str) -> None:
@@ -98,18 +20,23 @@ def train(path_to_config: str) -> None:
 
     # load config
     config = get_config(path_to_config)
-    config["path_to_config"] = path_to_config
+
+    # mkdir if not exists
+    config["path_to_save_folder"].absolute().mkdir(parents=True, exist_ok=True)
+
+    # get logger
+    logger = get_logger(config["path_to_save_logfile"])
 
     # reproducibility
     set_seed(config["seed"])
 
     # load data
-    print("Loading data...")
+    logger.info("Loading data...")
 
     X_train, X_valid, y_train, y_valid = load_data(config)
 
-    print(f"Train dataset size: {X_train.shape[0]}")
-    print(f"Valid dataset size: {X_valid.shape[0]}")
+    logger.info(f"Train dataset size: {X_train.shape[0]}")
+    logger.info(f"Valid dataset size: {X_valid.shape[0]}")
 
     # label encoder
     le = LabelEncoder()
@@ -120,26 +47,16 @@ def train(path_to_config: str) -> None:
     target_names_mapping = {i: cls for i, cls in enumerate(target_names)}
 
     # tf-idf
-    if ("tf-idf" not in config) or (config["tf-idf"] is None):
-        config["tf-idf"] = {}
-    if "ngram_range" in config["tf-idf"]:
-        config["tf-idf"]["ngram_range"] = ast.literal_eval(
-            config["tf-idf"]["ngram_range"]
-        )
-
     vectorizer = TfidfVectorizer(**config["tf-idf"])
 
     # logreg
-    if ("logreg" not in config) or (config["logreg"] is None):
-        config["logreg"] = {}
-
     clf = LogisticRegression(
         **config["logreg"],
         random_state=config["seed"],
     )
 
     # pipeline
-    print("\nFitting TF-IDF + LogReg model...")
+    logger.info("\nFitting TF-IDF + LogReg model...")
 
     pipe = Pipeline(
         [
@@ -152,17 +69,17 @@ def train(path_to_config: str) -> None:
     start_time = time.time()
     pipe.fit(X_train, y_train)
 
-    print(f"Fitting time: {(time.time() - start_time):.2f} seconds")
+    logger.info(f"Fitting time: {(time.time() - start_time):.2f} seconds")
 
-    print(f"\nTF-IDF number of features: {len(pipe['tf-idf'].vocabulary_)}")
+    logger.info(f"\nTF-IDF number of features: {len(pipe['tf-idf'].vocabulary_)}")
 
     # metrics
-    print("\nCalculating metrics...")
+    logger.info("\nCalculating metrics...")
 
-    print("Train classification report:")
+    logger.info("Train classification report:")
 
     y_pred_train = pipe.predict(X_train)
-    print(
+    logger.info(
         classification_report(
             y_true=y_train,
             y_pred=y_pred_train,
@@ -170,10 +87,10 @@ def train(path_to_config: str) -> None:
         )
     )
 
-    print("Valid classification report:")
+    logger.info("Valid classification report:")
 
     y_pred_valid = pipe.predict(X_valid)
-    print(
+    logger.info(
         classification_report(
             y_true=y_valid,
             y_pred=y_pred_valid,
@@ -182,7 +99,7 @@ def train(path_to_config: str) -> None:
     )
 
     # save model
-    print("Saving the model...")
+    logger.info("Saving the model...")
 
     save_model(
         pipe=pipe,
@@ -190,4 +107,4 @@ def train(path_to_config: str) -> None:
         config=config,
     )
 
-    print("Done!")
+    logger.info("Done!")
