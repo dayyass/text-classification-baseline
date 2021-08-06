@@ -72,7 +72,7 @@ def load_data(
     Load data.
 
     :param Dict[str, Any] config: config.
-    :return: X_train, X_test, y_train, y_test.
+    :return: X_train, X_valid, y_train, y_valid.
     :rtype: Tuple[pd.Series, pd.Series, pd.Series, pd.Series]
     """
 
@@ -88,18 +88,18 @@ def load_data(
         usecols=usecols,
     )
 
-    df_test = pd.read_csv(
-        config["data"]["test_data_path"],
+    df_valid = pd.read_csv(
+        config["data"]["valid_data_path"],
         sep=sep,
         usecols=usecols,
     )
 
     X_train = df_train[text_column]
-    X_test = df_test[text_column]
+    X_valid = df_valid[text_column]
     y_train = df_train[target_column]
-    y_test = df_test[target_column]
+    y_valid = df_valid[target_column]
 
-    return X_train, X_test, y_train, y_test
+    return X_train, X_valid, y_train, y_valid
 
 
 def save_model(
@@ -160,15 +160,15 @@ def main() -> int:
     # load data
     print("Loading data...")
 
-    X_train, X_test, y_train, y_test = load_data(config)
+    X_train, X_valid, y_train, y_valid = load_data(config)
 
     print(f"Train dataset size: {X_train.shape[0]}")
-    print(f"Test dataset size: {X_test.shape[0]}")
+    print(f"Valid dataset size: {X_valid.shape[0]}")
 
     # label encoder
     le = LabelEncoder()
     y_train = le.fit_transform(y_train)
-    y_test = le.transform(y_test)
+    y_valid = le.transform(y_valid)
 
     target_names = [str(cls) for cls in le.classes_.tolist()]
     target_names_mapping = {i: cls for i, cls in enumerate(target_names)}
@@ -224,13 +224,13 @@ def main() -> int:
         )
     )
 
-    print("Test classification report:")
+    print("Valid classification report:")
 
-    y_pred_test = pipe.predict(X_test)
+    y_pred_valid = pipe.predict(X_valid)
     print(
         classification_report(
-            y_true=y_test,
-            y_pred=y_pred_test,
+            y_true=y_valid,
+            y_pred=y_pred_valid,
             target_names=target_names,
         )
     )

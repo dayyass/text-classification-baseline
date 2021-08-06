@@ -42,4 +42,4 @@ else:
     )
 
 df_train.to_csv(os.path.join(path_to_save, "train.csv"), index=False)
-df_test.to_csv(os.path.join(path_to_save, "test.csv"), index=False)
+df_test.to_csv(os.path.join(path_to_save, "valid.csv"), index=False)
