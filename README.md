@@ -3,25 +3,29 @@ Pipeline for building text classification **TF-IDF + LogReg** baselines using **
 
 ### Usage
 Instead of writing custom code for specific text classification task, you just need:
-1) install pipeline:
+1. install pipeline:
 ```shell script
 pip install text-classification-baseline
 ```
-2a) either run pipeline in **terminal**:
-```shell script
-text-clf --config config.yaml
-```
-2b) or run pipeline in **python**:
-```python3
-import text_clf
-text_clf.train(path_to_config="config.yaml")
-```
+2. run pipeline:
+
+    - either in **terminal**:
+    ```shell script
+    text-clf --config config.yaml
+    ```
+    
+    - or in **python**:
+    ```python3
+    import text_clf
+    
+    text_clf.train(path_to_config="config.yaml")
+    ```
 
 No data preparation is needed, only a **csv** file with two raw columns (with arbitrary names):
-- text
-- target
+- `text`
+- `target`
 
-**NOTE**: the target can be presented in any format, including text - not necessarily integers from *0* to *n_classes-1*.
+**NOTE**: the **target** can be presented in any format, including text - not necessarily integers from *0* to *n_classes-1*.
 
 #### Config
 The user interface consists of only one file [**config.yaml**](https://github.com/dayyass/text-classification-baseline/blob/main/config.yaml).
@@ -29,8 +33,34 @@ The user interface consists of only one file [**config.yaml**](https://github.co
 Change **config.yaml** to create the desired configuration and train text classification model.
 
 Default **config.yaml**:
-```{r engine='bash', comment=''}
-cat config.yaml
+```yaml
+seed: 42
+verbose: true
+path_to_save_folder: models
+
+# data
+data:
+  train_data_path: data/train.csv
+  valid_data_path: data/valid.csv
+  sep: ','
+  text_column: text
+  target_column: target_name_short
+
+# tf-idf
+tf-idf:
+  lowercase: true
+  ngram_range: (1, 1)
+  max_df: 1.0
+  min_df: 0.0
+
+# logreg
+logreg:
+  penalty: l2
+  C: 1.0
+  class_weight: balanced
+  solver: saga
+  multi_class: auto
+  n_jobs: -1
 ```
 
 #### Output
