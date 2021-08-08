@@ -27,6 +27,9 @@ def train(path_to_config: str) -> None:
     # get logger
     logger = get_logger(config["path_to_save_logfile"])
 
+    # log config
+    logger.info(f"Config:\n\n{open(path_to_config).read()}")
+
     # reproducibility
     set_seed(config["seed"])
 
@@ -83,7 +86,7 @@ def train(path_to_config: str) -> None:
         target_names=target_names,
     )
 
-    logger.info(f"Train classification report:\n{classification_report_train}")
+    logger.info(f"Train classification report:\n\n{classification_report_train}")
 
     y_pred_valid = pipe.predict(X_valid)
     classification_report_valid = classification_report(
@@ -92,7 +95,7 @@ def train(path_to_config: str) -> None:
         target_names=target_names,
     )
 
-    logger.info(f"Valid classification report:\n{classification_report_valid}")
+    logger.info(f"Valid classification report:\n\n{classification_report_valid}")
 
     # save model
     logger.info("Saving the model...")
