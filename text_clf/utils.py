@@ -19,7 +19,7 @@ def get_argparse() -> ArgumentParser:
     :rtype: ArgumentParser
     """
 
-    parser = ArgumentParser(prog="text-clf")
+    parser = ArgumentParser(prog="text-clf-train")
     parser.add_argument(
         "--config",
         type=str,
@@ -80,7 +80,7 @@ def get_logger(path_to_logfile: str) -> logging.Logger:
     :rtype: logging.Logger
     """
 
-    logger = logging.getLogger("text-clf")
+    logger = logging.getLogger("text-clf-train")
     logger.setLevel(logging.INFO)
 
     # create handlers
