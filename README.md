@@ -13,11 +13,11 @@ pip install text-classification-baseline
     ```shell script
     text-clf --config config.yaml
     ```
-    
+
     - or in **python**:
     ```python3
     import text_clf
-    
+
     text_clf.train(path_to_config="config.yaml")
     ```
 
@@ -62,6 +62,8 @@ logreg:
   multi_class: auto
   n_jobs: -1
 ```
+
+**NOTE**: `tf-idf` and `logreg` are sklearn [**TfidfVectorizer**](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html?highlight=tfidf#sklearn.feature_extraction.text.TfidfVectorizer) and [**LogisticRegression**](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html) parameters correspondingly.
 
 #### Output
 After training the model, the pipeline will return the following files:
