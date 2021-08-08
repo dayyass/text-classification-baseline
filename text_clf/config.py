@@ -1,4 +1,5 @@
 import os
+from argparse import ArgumentParser
 
 
 def load_default_config(
@@ -51,3 +52,57 @@ def load_default_config(
         with open(path, mode="w") as fp:
             for line in config:
                 fp.write(f"{line}\n")
+
+
+def get_argparse() -> ArgumentParser:
+    """
+    Get argument parser.
+
+    :return: argument parser.
+    :rtype: ArgumentParser
+    """
+
+    parser = ArgumentParser(prog="text-clf-load-config")
+
+    parser.add_argument(
+        "--path_to_save_folder",
+        type=str,
+        required=False,
+        default=".",
+        help="Path to save folder",
+    )
+
+    parser.add_argument(
+        "--filename",
+        type=str,
+        required=False,
+        default="config.yaml",
+        help="Filename",
+    )
+
+    return parser
+
+
+def main() -> int:
+    """
+    Main function to load default config.
+
+    :return: exit code.
+    :rtype: int
+    """
+
+    # argument parser
+    parser = get_argparse()
+    args = parser.parse_args()
+
+    # load default config
+    load_default_config(
+        path_to_save_folder=args.path_to_save_folder,
+        filename=args.filename,
+    )
+
+    return 0
+
+
+if __name__ == "__main__":
+    exit(main())
