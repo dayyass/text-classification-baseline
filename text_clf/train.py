@@ -11,7 +11,7 @@ from .save import save_model
 from .utils import get_config, get_logger, set_seed
 
 
-def train(path_to_config: str) -> None:
+def train(path_to_config: str = "config.yaml") -> None:
     """
     Function to train baseline model.
 
