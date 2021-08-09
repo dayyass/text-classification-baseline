@@ -18,9 +18,8 @@ dist
 
 *.egg-info/
 
-data/*
-!data/README.md
-!data/fetch_20newsgroups.py
+*train.csv
+*valid.csv
 
 models/*
 !models/README.md
