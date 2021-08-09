@@ -8,17 +8,16 @@ Instead of writing custom code for specific text classification task, you just n
 pip install text-classification-baseline
 ```
 2. run pipeline:
+- either in **terminal**:
+```shell script
+text-clf-train
+```
+- or in **python**:
+```python3
+import text_clf
 
-    - either in **terminal**:
-    ```shell script
-    text-clf-train
-    ```
-    - or in **python**:
-    ```python3
-    import text_clf
-
-    text_clf.train()
-    ```
+text_clf.train()
+```
 
 No data preparation is needed, only a **csv** file with two raw columns (with arbitrary names):
 - `text`
