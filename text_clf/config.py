@@ -1,36 +1,6 @@
 import logging
 import os
 import sys
-from argparse import ArgumentParser
-
-
-def get_argparse() -> ArgumentParser:
-    """
-    Get argument parser.
-
-    :return: argument parser.
-    :rtype: ArgumentParser
-    """
-
-    parser = ArgumentParser(prog="text-clf-load-config")
-
-    parser.add_argument(
-        "--path_to_save_folder",
-        type=str,
-        required=False,
-        default=".",
-        help="Path to save folder",
-    )
-
-    parser.add_argument(
-        "--filename",
-        type=str,
-        required=False,
-        default="config.yaml",
-        help="Filename",
-    )
-
-    return parser
 
 
 def get_logger() -> logging.Logger:
@@ -116,28 +86,3 @@ def load_default_config(
                 fp.write(f"{line}\n")
 
         logger.info(f"Default config {path} successfully loaded.")
-
-
-def main() -> int:
-    """
-    Main function to load default config.
-
-    :return: exit code.
-    :rtype: int
-    """
-
-    # argument parser
-    parser = get_argparse()
-    args = parser.parse_args()
-
-    # load default config
-    load_default_config(
-        path_to_save_folder=args.path_to_save_folder,
-        filename=args.filename,
-    )
-
-    return 0
-
-
-if __name__ == "__main__":
-    exit(main())
