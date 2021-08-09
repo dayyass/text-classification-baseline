@@ -1,6 +1,7 @@
 import ast
 import datetime
 import logging
+import os
 import random
 import sys
 from argparse import ArgumentParser
@@ -9,6 +10,8 @@ from typing import Any, Dict
 
 import numpy as np
 import yaml
+
+from .config import load_default_config
 
 
 def get_argparse() -> ArgumentParser:
@@ -40,10 +43,13 @@ def get_config(path_to_config: str) -> Dict[str, Any]:
     :rtype: Dict[str, Any]
     """
 
-    now = datetime.datetime.now()
+    if not os.path.exists(path_to_config):
+        load_default_config()
 
     with open(path_to_config, mode="r") as fp:
         config = yaml.safe_load(fp)
+
+    now = datetime.datetime.now()
 
     config["path_to_save_folder"] = (
         Path(config["path_to_save_folder"]) / f"model_{now.date()}_{now.time()}"
