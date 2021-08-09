@@ -1,5 +1,61 @@
+import logging
 import os
+import sys
 from argparse import ArgumentParser
+
+
+def get_argparse() -> ArgumentParser:
+    """
+    Get argument parser.
+
+    :return: argument parser.
+    :rtype: ArgumentParser
+    """
+
+    parser = ArgumentParser(prog="text-clf-load-config")
+
+    parser.add_argument(
+        "--path_to_save_folder",
+        type=str,
+        required=False,
+        default=".",
+        help="Path to save folder",
+    )
+
+    parser.add_argument(
+        "--filename",
+        type=str,
+        required=False,
+        default="config.yaml",
+        help="Filename",
+    )
+
+    return parser
+
+
+def get_logger() -> logging.Logger:
+    """
+    Get logger.
+
+    :return: logger.
+    :rtype: logging.Logger
+    """
+
+    logger = logging.getLogger("text-clf-load-config")
+    logger.setLevel(logging.INFO)
+
+    # create handlers
+    stream_handler = logging.StreamHandler(sys.stdout)
+    stream_handler.setLevel(logging.INFO)
+
+    # create formatters and add it to handlers
+    stream_format = logging.Formatter("%(name)s - %(levelname)s - %(message)s")
+    stream_handler.setFormatter(stream_format)
+
+    # add handlers to the logger
+    logger.addHandler(stream_handler)
+
+    return logger
 
 
 def load_default_config(
@@ -12,6 +68,9 @@ def load_default_config(
     :param str path_to_save_folder: path to save folder (default: '.').
     :param str filename: filename (default: 'config.yaml').
     """
+
+    # get logger
+    logger = get_logger()
 
     path = os.path.join(path_to_save_folder, filename)
 
@@ -46,41 +105,17 @@ def load_default_config(
     ]
 
     if os.path.exists(path):
-        raise FileExistsError(f"file {path} already exists.")
+        error_msg = f"Config {path} already exists."
+
+        logger.error(error_msg)
+        raise FileExistsError(error_msg)
 
     else:
         with open(path, mode="w") as fp:
             for line in config:
                 fp.write(f"{line}\n")
 
-
-def get_argparse() -> ArgumentParser:
-    """
-    Get argument parser.
-
-    :return: argument parser.
-    :rtype: ArgumentParser
-    """
-
-    parser = ArgumentParser(prog="text-clf-load-config")
-
-    parser.add_argument(
-        "--path_to_save_folder",
-        type=str,
-        required=False,
-        default=".",
-        help="Path to save folder",
-    )
-
-    parser.add_argument(
-        "--filename",
-        type=str,
-        required=False,
-        default="config.yaml",
-        help="Filename",
-    )
-
-    return parser
+        logger.info(f"Default config {path} successfully loaded.")
 
 
 def main() -> int:
