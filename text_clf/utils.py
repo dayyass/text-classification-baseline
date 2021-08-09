@@ -24,7 +24,7 @@ def get_argparse() -> ArgumentParser:
 
     parser = ArgumentParser(prog="text-clf-train")
     parser.add_argument(
-        "--config",
+        "--path_to_config",
         type=str,
         required=False,
         default="config.yaml",
