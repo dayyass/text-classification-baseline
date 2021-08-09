@@ -1,5 +1,5 @@
 ### Text Classification Baseline
-Pipeline for building text classification **TF-IDF + LogReg** baselines using **sklearn**.
+Pipeline for fast building text classification **TF-IDF + LogReg** baselines.
 
 ### Usage
 Instead of writing custom code for specific text classification task, you just need:
@@ -8,18 +8,16 @@ Instead of writing custom code for specific text classification task, you just n
 pip install text-classification-baseline
 ```
 2. run pipeline:
+- either in **terminal**:
+```shell script
+text-clf-train
+```
+- or in **python**:
+```python3
+import text_clf
 
-    - either in **terminal**:
-    ```shell script
-    text-clf --config config.yaml
-    ```
-
-    - or in **python**:
-    ```python3
-    import text_clf
-
-    text_clf.train(path_to_config="config.yaml")
-    ```
+text_clf.train()
+```
 
 No data preparation is needed, only a **csv** file with two raw columns (with arbitrary names):
 - `text`
@@ -30,7 +28,17 @@ No data preparation is needed, only a **csv** file with two raw columns (with ar
 #### Config
 The user interface consists of only one file [**config.yaml**](https://github.com/dayyass/text-classification-baseline/blob/main/config.yaml).
 
-Change **config.yaml** to create the desired configuration and train text classification model.
+Change **config.yaml** to create the desired configuration and train text classification model with the following command:
+- **terminal**:
+```shell script
+text-clf-train --path_to_config config.yaml
+```
+- **python**:
+```python3
+import text_clf
+
+text_clf.train(path_to_config="config.yaml")
+```
 
 Default **config.yaml**:
 ```yaml
@@ -63,7 +71,7 @@ logreg:
   n_jobs: -1
 ```
 
-**NOTE**: `tf-idf` and `logreg` are sklearn [**TfidfVectorizer**](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html?highlight=tfidf#sklearn.feature_extraction.text.TfidfVectorizer) and [**LogisticRegression**](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html) parameters correspondingly.
+**NOTE**: `tf-idf` and `logreg` are sklearn [**TfidfVectorizer**](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html?highlight=tfidf#sklearn.feature_extraction.text.TfidfVectorizer) and [**LogisticRegression**](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html) parameters correspondingly, so you can parameterize instances of these classes however you want.
 
 #### Output
 After training the model, the pipeline will return the following files:

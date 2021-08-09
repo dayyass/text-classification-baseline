@@ -1,15 +1,9 @@
-import ast
-import datetime
 import logging
-import os
 import random
 import sys
 from argparse import ArgumentParser
-from pathlib import Path
-from typing import Any, Dict
 
 import numpy as np
-import yaml
 
 
 def get_argparse() -> ArgumentParser:
@@ -20,107 +14,16 @@ def get_argparse() -> ArgumentParser:
     :rtype: ArgumentParser
     """
 
-    parser = ArgumentParser(prog="text-clf")
+    parser = ArgumentParser(prog="text-clf-train")
     parser.add_argument(
-        "--config",
+        "--path_to_config",
         type=str,
-        required=True,
+        required=False,
+        default="config.yaml",
         help="Path to config",
     )
 
     return parser
-
-
-def get_config(path_to_config: str) -> Dict[str, Any]:
-    """
-    Get config.
-
-    :param str path_to_config: path to config.
-    :return: config.
-    :rtype: Dict[str, Any]
-    """
-
-    now = datetime.datetime.now()
-
-    with open(path_to_config, mode="r") as fp:
-        config = yaml.safe_load(fp)
-
-    config["path_to_save_folder"] = (
-        Path(config["path_to_save_folder"]) / f"model_{now.date()}_{now.time()}"
-    )
-
-    config["path_to_config"] = path_to_config
-    config["path_to_save_model"] = config["path_to_save_folder"] / "model.joblib"
-    config["path_to_save_logfile"] = config["path_to_save_folder"] / "logging.txt"
-    config["path_to_save_target_names_mapping"] = (
-        config["path_to_save_folder"] / "target_names.json"
-    )
-
-    # tf-idf
-    if ("tf-idf" not in config) or (config["tf-idf"] is None):
-        config["tf-idf"] = {}
-    if "ngram_range" in config["tf-idf"]:
-        config["tf-idf"]["ngram_range"] = ast.literal_eval(
-            config["tf-idf"]["ngram_range"]
-        )
-
-    # logreg
-    if ("logreg" not in config) or (config["logreg"] is None):
-        config["logreg"] = {}
-
-    return config
-
-
-def load_default_config(
-    path_to_save_folder: str = ".",
-    filename: str = "config.yaml",
-) -> None:
-    """
-    Function to load default config.
-
-    :param str path_to_save_folder: path to save folder (default: '.').
-    :param str filename: filename (default: 'config.yaml').
-    """
-
-    path = os.path.join(path_to_save_folder, filename)
-
-    config = [
-        "seed: 42",
-        "verbose: true",
-        "path_to_save_folder: models",
-        "",
-        "# data",
-        "data:",
-        "  train_data_path: data/train.csv",
-        "  valid_data_path: data/valid.csv",
-        "  sep: ','",
-        "  text_column: text",
-        "  target_column: target_name_short",
-        "",
-        "# tf-idf",
-        "tf-idf:",
-        "  lowercase: true",
-        "  ngram_range: (1, 1)",
-        "  max_df: 1.0",
-        "  min_df: 0.0",
-        "",
-        "# logreg",
-        "logreg:",
-        "  penalty: l2",
-        "  C: 1.0",
-        "  class_weight: balanced",
-        "  solver: saga",
-        "  multi_class: auto",
-        "  n_jobs: -1",
-    ]
-
-    if os.path.exists(path):
-        raise FileExistsError(f"file {path} already exists.")
-
-    else:
-        with open(path, mode="w") as fp:
-            for line in config:
-                fp.write(f"{line}\n")
 
 
 def get_logger(path_to_logfile: str) -> logging.Logger:
@@ -132,7 +35,7 @@ def get_logger(path_to_logfile: str) -> logging.Logger:
     :rtype: logging.Logger
     """
 
-    logger = logging.getLogger("text-clf")
+    logger = logging.getLogger("text-clf-train")
     logger.setLevel(logging.INFO)
 
     # create handlers

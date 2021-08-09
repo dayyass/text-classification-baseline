@@ -6,12 +6,13 @@ from sklearn.metrics import classification_report
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import LabelEncoder
 
+from .config import get_config
 from .data import load_data
 from .save import save_model
-from .utils import get_config, get_logger, set_seed
+from .utils import get_logger, set_seed
 
 
-def train(path_to_config: str) -> None:
+def train(path_to_config: str = "config.yaml") -> None:
     """
     Function to train baseline model.
 
