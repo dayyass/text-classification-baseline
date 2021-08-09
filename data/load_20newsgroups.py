@@ -26,20 +26,22 @@ def make_df_from_bunch(bunch: Bunch) -> pd.DataFrame:
     return df
 
 
-train_bunch = fetch_20newsgroups(subset="train")
-test_bunch = fetch_20newsgroups(subset="test")
+def load_20newsgroups() -> None:
+    """
+    Load 20newsgroups dataset.
+    """
 
-df_train = make_df_from_bunch(train_bunch)
-df_test = make_df_from_bunch(test_bunch)
+    train_bunch = fetch_20newsgroups(subset="train")
+    test_bunch = fetch_20newsgroups(subset="test")
 
-if os.getcwd().endswith(r"/text_classification_baseline/data"):
-    path_to_save = os.getcwd()
-elif os.getcwd().endswith(r"/text_classification_baseline"):
-    path_to_save = os.path.join(os.getcwd(), "data")
-else:
-    raise Exception(
-        "Run script from `text_classification_baseline` folder or `text_classification_baseline/data` folder."
-    )
+    df_train = make_df_from_bunch(train_bunch)
+    df_valid = make_df_from_bunch(test_bunch)
 
-df_train.to_csv(os.path.join(path_to_save, "train.csv"), index=False)
-df_test.to_csv(os.path.join(path_to_save, "valid.csv"), index=False)
+    os.makedirs("data", exist_ok=True)
+
+    df_train.to_csv("data/train.csv", index=False)
+    df_valid.to_csv("data/valid.csv", index=False)
+
+
+if __name__ == "__main__":
+    load_20newsgroups()
