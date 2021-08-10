@@ -52,31 +52,6 @@ def get_config(path_to_config: str) -> Dict[str, Any]:
     return config
 
 
-def get_logger() -> logging.Logger:
-    """
-    Get logger.
-
-    :return: logger.
-    :rtype: logging.Logger
-    """
-
-    logger = logging.getLogger("text-clf-load-config")
-    logger.setLevel(logging.INFO)
-
-    # create handlers
-    stream_handler = logging.StreamHandler(sys.stdout)
-    stream_handler.setLevel(logging.INFO)
-
-    # create formatters and add it to handlers
-    stream_format = logging.Formatter("%(name)s - %(levelname)s - %(message)s")
-    stream_handler.setFormatter(stream_format)
-
-    # add handlers to the logger
-    logger.addHandler(stream_handler)
-
-    return logger
-
-
 def load_default_config(
     path_to_save_folder: str = ".",
     filename: str = "config.yaml",
@@ -89,8 +64,18 @@ def load_default_config(
     """
 
     # get logger
-    logger = get_logger()
+    logger = logging.getLogger("text-clf-load-config")
+    logger.setLevel(logging.INFO)
 
+    stream_handler = logging.StreamHandler(sys.stdout)
+    stream_handler.setLevel(logging.INFO)
+
+    stream_format = logging.Formatter("%(name)s - %(levelname)s - %(message)s")
+    stream_handler.setFormatter(stream_format)
+
+    logger.addHandler(stream_handler)
+
+    # default config
     path = os.path.join(path_to_save_folder, filename)
 
     config = [
