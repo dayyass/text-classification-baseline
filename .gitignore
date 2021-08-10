@@ -18,8 +18,8 @@ dist
 
 *.egg-info/
 
-*train.csv
-*valid.csv
+data/train.csv
+data/valid.csv
 
 models/*
 !models/README.md
