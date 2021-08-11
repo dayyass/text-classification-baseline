@@ -1,7 +1,9 @@
+import os
 import unittest
 
 from data.load_20newsgroups import load_20newsgroups
-from text_clf.__main__ import train
+from text_clf.config import load_default_config
+from text_clf.train import train
 
 
 class TestUsage(unittest.TestCase):
@@ -12,9 +14,15 @@ class TestUsage(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """
-        SetUp tests with data.
+        SetUp tests with config and data.
         """
 
+        path_to_config = "config.yaml"
+
+        if os.path.exists(path_to_config):
+            os.remove(path_to_config)
+
+        load_default_config()
         load_20newsgroups()
 
     def test_train(self) -> None:
