@@ -23,7 +23,8 @@ def get_argparse() -> ArgumentParser:
     parser.add_argument(
         "--config",
         type=str,
-        required=True,
+        required=False,
+        default="config.yaml",
         help="Path to config",
     )
 

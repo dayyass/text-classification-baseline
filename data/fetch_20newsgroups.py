@@ -32,9 +32,9 @@ test_bunch = fetch_20newsgroups(subset="test")
 df_train = make_df_from_bunch(train_bunch)
 df_test = make_df_from_bunch(test_bunch)
 
-if os.getcwd().endswith(r"/text_classification_baseline/data"):
+if os.getcwd().endswith(r"/text-classification-baseline/data"):
     path_to_save = os.getcwd()
-elif os.getcwd().endswith(r"/text_classification_baseline"):
+elif os.getcwd().endswith(r"/text-classification-baseline"):
     path_to_save = os.path.join(os.getcwd(), "data")
 else:
     raise Exception(
