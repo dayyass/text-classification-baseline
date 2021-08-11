@@ -24,10 +24,9 @@ def get_config(path_to_config: str) -> Dict[str, Any]:
     with open(path_to_config, mode="r") as fp:
         config = yaml.safe_load(fp)
 
-    now = datetime.datetime.now()
-
     config["path_to_save_folder"] = (
-        Path(config["path_to_save_folder"]) / f"model_{now.date()}_{now.time()}"
+        Path(config["path_to_save_folder"])
+        / f"model_{datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S')}"
     )
 
     config["path_to_config"] = path_to_config
