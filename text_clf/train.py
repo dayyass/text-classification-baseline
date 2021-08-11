@@ -6,12 +6,13 @@ from sklearn.metrics import classification_report
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import LabelEncoder
 
+from .config import get_config
 from .data import load_data
 from .save import save_model
-from .utils import get_config, get_logger, set_seed
+from .utils import get_logger, set_seed
 
 
-def train(path_to_config: str) -> None:
+def train(path_to_config: str = "config.yaml") -> None:
     """
     Function to train baseline model.
 
@@ -26,6 +27,10 @@ def train(path_to_config: str) -> None:
 
     # get logger
     logger = get_logger(config["path_to_save_logfile"])
+
+    # log config
+    with open(path_to_config, mode="r") as fp:
+        logger.info(f"Config:\n\n{fp.read()}")
 
     # reproducibility
     set_seed(config["seed"])
@@ -83,7 +88,7 @@ def train(path_to_config: str) -> None:
         target_names=target_names,
     )
 
-    logger.info(f"Train classification report:\n{classification_report_train}")
+    logger.info(f"Train classification report:\n\n{classification_report_train}")
 
     y_pred_valid = pipe.predict(X_valid)
     classification_report_valid = classification_report(
@@ -92,7 +97,7 @@ def train(path_to_config: str) -> None:
         target_names=target_names,
     )
 
-    logger.info(f"Valid classification report:\n{classification_report_valid}")
+    logger.info(f"Valid classification report:\n\n{classification_report_valid}")
 
     # save model
     logger.info("Saving the model...")

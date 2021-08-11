@@ -1,5 +1,19 @@
+[![tests](https://github.com/dayyass/text-classification-baseline/actions/workflows/tests.yml/badge.svg)](https://github.com/dayyass/text-classification-baseline/actions/workflows/tests.yml)
+[![linter](https://github.com/dayyass/text-classification-baseline/actions/workflows/linter.yml/badge.svg)](https://github.com/dayyass/text-classification-baseline/actions/workflows/linter.yml)
+[![codecov](https://codecov.io/gh/dayyass/text-classification-baseline/branch/main/graph/badge.svg?token=ABFF3YQBJV)](https://codecov.io/gh/dayyass/text-classification-baseline)
+
+[![python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://github.com/dayyass/text-classification-baseline#requirements)
+[![release (latest by date)](https://img.shields.io/github/v/release/dayyass/text-classification-baseline)](https://github.com/dayyass/text-classification-baseline/releases/latest)
+[![license](https://img.shields.io/github/license/dayyass/text-classification-baseline?color=blue)](https://github.com/dayyass/text-classification-baseline/blob/main/LICENSE)
+
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-black)](https://github.com/dayyass/text-classification-baseline/blob/main/.pre-commit-config.yaml)
+[![code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
+[![pypi version](https://img.shields.io/pypi/v/text-classification-baseline)](https://pypi.org/project/text-classification-baseline)
+[![pypi downloads](https://img.shields.io/pypi/dm/text-classification-baseline)](https://pypi.org/project/text-classification-baseline)
+
 ### Text Classification Baseline
-Pipeline for building text classification **TF-IDF + LogReg** baselines using **sklearn**.
+Pipeline for fast building text classification **TF-IDF + LogReg** baselines.
 
 ### Usage
 Instead of writing custom code for specific text classification task, you just need:
@@ -8,18 +22,16 @@ Instead of writing custom code for specific text classification task, you just n
 pip install text-classification-baseline
 ```
 2. run pipeline:
+- either in **terminal**:
+```shell script
+text-clf-train
+```
+- or in **python**:
+```python3
+import text_clf
 
-    - either in **terminal**:
-    ```shell script
-    text-clf --config config.yaml
-    ```
-    
-    - or in **python**:
-    ```python3
-    import text_clf
-    
-    text_clf.train(path_to_config="config.yaml")
-    ```
+text_clf.train()
+```
 
 No data preparation is needed, only a **csv** file with two raw columns (with arbitrary names):
 - `text`
@@ -30,7 +42,17 @@ No data preparation is needed, only a **csv** file with two raw columns (with ar
 #### Config
 The user interface consists of only one file [**config.yaml**](https://github.com/dayyass/text-classification-baseline/blob/main/config.yaml).
 
-Change **config.yaml** to create the desired configuration and train text classification model.
+Change **config.yaml** to create the desired configuration and train text classification model with the following command:
+- **terminal**:
+```shell script
+text-clf-train --path_to_config config.yaml
+```
+- **python**:
+```python3
+import text_clf
+
+text_clf.train(path_to_config="config.yaml")
+```
 
 Default **config.yaml**:
 ```yaml
@@ -63,6 +85,8 @@ logreg:
   n_jobs: -1
 ```
 
+**NOTE**: `tf-idf` and `logreg` are sklearn [**TfidfVectorizer**](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html?highlight=tfidf#sklearn.feature_extraction.text.TfidfVectorizer) and [**LogisticRegression**](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html) parameters correspondingly, so you can parameterize instances of these classes however you want.
+
 #### Output
 After training the model, the pipeline will return the following files:
 - `model.joblib` - sklearn pipeline with TF-IDF and LogReg steps
@@ -71,7 +95,7 @@ After training the model, the pipeline will return the following files:
 - `logging.txt` - logging file
 
 ### Requirements
-Python >= 3.7
+Python >= 3.6
 
 ### Citation
 If you use **text-classification-baseline** in a scientific publication, we would appreciate references to the following BibTex entry:

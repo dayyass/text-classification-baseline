@@ -1,0 +1,17 @@
+[run]
+branch = True
+source = text_clf
+
+[report]
+exclude_lines =
+    pragma: no cover
+    if self\.debug
+    raise AssertionError
+    raise NotImplementedError
+    if __name__ == .__main__.:
+
+omit =
+    text_clf/__main__.py
+
+show_missing = True
+ignore_errors = False

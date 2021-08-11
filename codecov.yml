@@ -1,0 +1,15 @@
+codecov:
+  require_ci_to_pass: yes
+
+ignore:
+  - "text_clf/__main__.py"
+
+coverage:
+  status:
+    project:
+      default: false
+      source:
+        paths:
+          - "text_clf/"
+        target: 90%
+    patch: off

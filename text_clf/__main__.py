@@ -15,7 +15,7 @@ def main() -> int:
     args = parser.parse_args()
 
     # train
-    train(path_to_config=args.config)
+    train(path_to_config=args.path_to_config)
 
     return 0
 
