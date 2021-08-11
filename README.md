@@ -1,3 +1,17 @@
+[![tests](https://github.com/dayyass/text-classification-baseline/actions/workflows/tests.yml/badge.svg)](https://github.com/dayyass/text-classification-baseline/actions/workflows/tests.yml)
+[![linter](https://github.com/dayyass/text-classification-baseline/actions/workflows/linter.yml/badge.svg)](https://github.com/dayyass/text-classification-baseline/actions/workflows/linter.yml)
+[![codecov](https://codecov.io/gh/dayyass/text-classification-baseline/branch/main/graph/badge.svg?token=ABFF3YQBJV)](https://codecov.io/gh/dayyass/text-classification-baseline)
+
+[![python 3.7](https://img.shields.io/badge/python-3.7-blue.svg)](https://github.com/dayyass/text-classification-baseline#requirements)
+[![release (latest by date)](https://img.shields.io/github/v/release/dayyass/text-classification-baseline)](https://github.com/dayyass/text-classification-baseline/releases/latest)
+[![license](https://img.shields.io/github/license/dayyass/text-classification-baseline?color=blue)](https://github.com/dayyass/text-classification-baseline/blob/main/LICENSE)
+
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-black)](https://github.com/dayyass/text-classification-baseline/blob/main/.pre-commit-config.yaml)
+[![code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
+[![pypi version](https://img.shields.io/pypi/v/text-classification-baseline)](https://pypi.org/project/text-classification-baseline)
+[![pypi downloads](https://img.shields.io/pypi/dm/text-classification-baseline)](https://pypi.org/project/text-classification-baseline)
+
 ### Text Classification Baseline
 Pipeline for fast building text classification **TF-IDF + LogReg** baselines.
 
