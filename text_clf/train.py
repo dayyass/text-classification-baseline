@@ -29,7 +29,8 @@ def train(path_to_config: str = "config.yaml") -> None:
     logger = get_logger(config["path_to_save_logfile"])
 
     # log config
-    logger.info(f"Config:\n\n{open(path_to_config).read()}")
+    with open(path_to_config, mode="r") as fp:
+        logger.info(f"Config:\n\n{fp.read()}")
 
     # reproducibility
     set_seed(config["seed"])
