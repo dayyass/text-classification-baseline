@@ -2,7 +2,7 @@
 [![linter](https://github.com/dayyass/text-classification-baseline/actions/workflows/linter.yml/badge.svg)](https://github.com/dayyass/text-classification-baseline/actions/workflows/linter.yml)
 [![codecov](https://codecov.io/gh/dayyass/text-classification-baseline/branch/main/graph/badge.svg?token=ABFF3YQBJV)](https://codecov.io/gh/dayyass/text-classification-baseline)
 
-[![python 3.7](https://img.shields.io/badge/python-3.7-blue.svg)](https://github.com/dayyass/text-classification-baseline#requirements)
+[![python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://github.com/dayyass/text-classification-baseline#requirements)
 [![release (latest by date)](https://img.shields.io/github/v/release/dayyass/text-classification-baseline)](https://github.com/dayyass/text-classification-baseline/releases/latest)
 [![license](https://img.shields.io/github/license/dayyass/text-classification-baseline?color=blue)](https://github.com/dayyass/text-classification-baseline/blob/main/LICENSE)
 
@@ -95,7 +95,7 @@ After training the model, the pipeline will return the following files:
 - `logging.txt` - logging file
 
 ### Requirements
-Python >= 3.7
+Python >= 3.6
 
 ### Citation
 If you use **text-classification-baseline** in a scientific publication, we would appreciate references to the following BibTex entry:
