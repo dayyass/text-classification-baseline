@@ -9,7 +9,7 @@ from sklearn.preprocessing import LabelEncoder
 from .config import get_config
 from .data import load_data
 from .save import save_model
-from .utils import get_logger, set_seed
+from .utils import close_logger, get_logger, set_seed
 
 
 def train(path_to_config: str = "config.yaml") -> None:
@@ -109,3 +109,5 @@ def train(path_to_config: str = "config.yaml") -> None:
     )
 
     logger.info("Done!")
+
+    close_logger(logger)
