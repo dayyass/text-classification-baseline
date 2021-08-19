@@ -13,7 +13,7 @@ from .save import save_model
 from .utils import close_logger, set_seed
 
 
-def train(
+def _train(
     config: Dict[str, Any],
     logger: logging.Logger,
 ) -> None:
