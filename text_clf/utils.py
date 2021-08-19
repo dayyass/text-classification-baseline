@@ -59,6 +59,19 @@ def get_logger(path_to_logfile: str) -> logging.Logger:
     return logger
 
 
+def close_logger(logger: logging.Logger) -> None:
+    """
+    Close logger.
+    Source: https://stackoverflow.com/questions/15435652/python-does-not-release-filehandles-to-logfile
+
+    :param logging.Logger logger: logger.
+    """
+
+    for handler in logger.handlers[:]:
+        handler.close()
+        logger.removeHandler(handler)
+
+
 def set_seed(seed: int) -> None:
     """
     Set seed for reproducibility.

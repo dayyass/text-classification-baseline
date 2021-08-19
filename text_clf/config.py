@@ -29,6 +29,9 @@ def get_config(path_to_config: str) -> Dict[str, Any]:
         / f"model_{datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S')}"
     )
 
+    # mkdir if not exists
+    config["path_to_save_folder"].absolute().mkdir(parents=True, exist_ok=True)
+
     config["path_to_config"] = path_to_config
     config["path_to_save_model"] = config["path_to_save_folder"] / "model.joblib"
     config["path_to_save_logfile"] = config["path_to_save_folder"] / "logging.txt"
