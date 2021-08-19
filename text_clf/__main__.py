@@ -1,3 +1,5 @@
+import traceback
+
 from .config import get_config
 from .train import _train
 from .utils import close_logger, get_argparse, get_logger
@@ -23,6 +25,8 @@ def train(path_to_config: str = "config.yaml") -> None:
         )
     except:  # noqa
         close_logger(logger)
+
+        print(traceback.format_exc())
 
 
 def main() -> int:
