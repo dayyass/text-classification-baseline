@@ -1,4 +1,6 @@
+import logging
 import time
+from typing import Any, Dict
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
@@ -6,30 +8,24 @@ from sklearn.metrics import classification_report
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import LabelEncoder
 
-from .config import get_config
 from .data import load_data
 from .save import save_model
-from .utils import close_logger, get_logger, set_seed
+from .utils import close_logger, set_seed
 
 
-def train(path_to_config: str = "config.yaml") -> None:
+def train(
+    config: Dict[str, Any],
+    logger: logging.Logger,
+) -> None:
     """
     Function to train baseline model.
 
-    :param str path_to_config: path to config.
+    :param Dict[str, Any] config: config.
+    :param logging.Logger logger: logger.
     """
 
-    # load config
-    config = get_config(path_to_config)
-
-    # mkdir if not exists
-    config["path_to_save_folder"].absolute().mkdir(parents=True, exist_ok=True)
-
-    # get logger
-    logger = get_logger(config["path_to_save_logfile"])
-
     # log config
-    with open(path_to_config, mode="r") as fp:
+    with open(config["path_to_config"], mode="r") as fp:
         logger.info(f"Config:\n\n{fp.read()}")
 
     # reproducibility
