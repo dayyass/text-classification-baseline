@@ -2,8 +2,8 @@ import os
 import unittest
 
 from data.load_20newsgroups import load_20newsgroups
+from text_clf.__main__ import train
 from text_clf.config import load_default_config
-from text_clf.train import train
 
 
 class TestUsage(unittest.TestCase):
