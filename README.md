@@ -72,16 +72,15 @@ data:
 tf-idf:
   lowercase: true
   ngram_range: (1, 1)
-  max_df: 1.0
-  min_df: 0.0
+  max_df: 0.9
+  min_df: 15
 
 # logreg
 logreg:
   penalty: l2
-  C: 1.0
+  C: 0.5
   class_weight: balanced
   solver: saga
-  multi_class: auto
   n_jobs: -1
 ```
 
