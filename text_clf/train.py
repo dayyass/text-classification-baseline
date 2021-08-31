@@ -68,7 +68,11 @@ def _train(
     )
 
     start_time = time.time()
-    pipe.fit(X_train, y_train)
+
+    if config["grid-search"]["do_grid_search"]:
+        pass
+    else:
+        pipe.fit(X_train, y_train)
 
     logger.info(f"Fitting time: {(time.time() - start_time):.2f} seconds")
 
