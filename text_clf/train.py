@@ -10,7 +10,7 @@ from sklearn.preprocessing import LabelEncoder
 
 from .data import load_data
 from .save import save_model
-from .utils import close_logger, set_seed
+from .utils import close_logger, get_grid_search_params, set_seed
 
 
 def _train(
@@ -70,7 +70,9 @@ def _train(
     start_time = time.time()
 
     if config["grid-search"]["do_grid_search"]:
-        pass
+        grid_search_params = get_grid_search_params(
+            config["grid-search"]["grid_search_params_path"]
+        )
     else:
         pipe.fit(X_train, y_train)
 
