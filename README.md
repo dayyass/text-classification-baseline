@@ -82,6 +82,11 @@ logreg:
   class_weight: balanced
   solver: saga
   n_jobs: -1
+
+# grid-search
+grid-search:
+  do_grid_search: true
+  grid_search_params_path: hyperparams.py
 ```
 
 **NOTE**: `tf-idf` and `logreg` are sklearn [**TfidfVectorizer**](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html?highlight=tfidf#sklearn.feature_extraction.text.TfidfVectorizer) and [**LogisticRegression**](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html) parameters correspondingly, so you can parameterize instances of these classes however you want.
