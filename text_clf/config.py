@@ -82,7 +82,6 @@ def load_default_config(
 
     config = [
         "seed: 42",
-        "verbose: true",
         "path_to_save_folder: models",
         "",
         "# data",

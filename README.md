@@ -57,7 +57,6 @@ text_clf.train(path_to_config="config.yaml")
 Default **config.yaml**:
 ```yaml
 seed: 42
-verbose: true
 path_to_save_folder: models
 
 # data
