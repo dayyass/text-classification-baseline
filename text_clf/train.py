@@ -1,5 +1,4 @@
 import logging
-import time
 from typing import Any, Dict
 
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -66,11 +65,9 @@ def _train(
         verbose=False if config["grid-search"]["do_grid_search"] else True,
     )
 
-    logger.info("Fitting TF-IDF + LogReg model...")
-
-    start_time = time.time()
-
     if config["grid-search"]["do_grid_search"]:
+        logger.info("Finding best hyper-parameters...")
+
         grid_search_params = get_grid_search_params(
             config["grid-search"]["grid_search_params_path"]
         )
@@ -79,10 +76,11 @@ def _train(
 
         pipe = grid.best_estimator_
     else:
+        logger.info("Fitting TF-IDF + LogReg model...")
+
         pipe.fit(X_train, y_train)
 
-    logger.info(f"Fitting time: {(time.time() - start_time):.2f} seconds")
-
+    logger.info("Done!")
     logger.info(f"TF-IDF number of features: {len(pipe['tf-idf'].vocabulary_)}")
 
     # metrics
