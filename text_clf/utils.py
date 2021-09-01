@@ -98,8 +98,9 @@ def get_grid_search_params(grid_search_params_path: str) -> Dict[str, Any]:
         name="hyperparams",
         location=grid_search_params_path,
     )
-    hyperparams = importlib.util.module_from_spec(spec)
+    hyperparams = importlib.util.module_from_spec(spec)  # type: ignore
     spec.loader.exec_module(hyperparams)  # type: ignore
 
     grid_search_params = hyperparams.grid_search_params  # type: ignore
+
     return grid_search_params
