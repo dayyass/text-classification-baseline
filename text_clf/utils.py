@@ -94,7 +94,7 @@ def get_grid_search_params(grid_search_params_path: str) -> Dict[str, Any]:
     :rtype: Dict[str, Any]
     """
 
-    spec = importlib.util.spec_from_file_location(
+    spec = importlib.util.spec_from_file_location(  # type: ignore
         name="hyperparams",
         location=grid_search_params_path,
     )
