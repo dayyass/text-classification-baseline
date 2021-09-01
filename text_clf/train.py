@@ -5,6 +5,7 @@ from typing import Any, Dict
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report
+from sklearn.model_selection import GridSearchCV
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import LabelEncoder
 
@@ -73,6 +74,8 @@ def _train(
         grid_search_params = get_grid_search_params(
             config["grid-search"]["grid_search_params_path"]
         )
+        grid = GridSearchCV(pipe, **grid_search_params)
+        grid.fit(X_train, y_train)
     else:
         pipe.fit(X_train, y_train)
 

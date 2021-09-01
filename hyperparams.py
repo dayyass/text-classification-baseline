@@ -1,3 +1,4 @@
+# do not change the variable name!
 grid_search_params = {
     "param_grid": {
         "tf-idf__ngram_range": [(1, 1), (1, 2)],
@@ -10,6 +11,6 @@ grid_search_params = {
     "scoring": "f1_weighted",
     "cv": 3,
     "error_score": 0,
-    "verbose": 1,  # TODO: test
+    "verbose": 3,
     "n_jobs": -1,
 }
