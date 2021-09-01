@@ -106,6 +106,7 @@ def load_default_config(
         "  class_weight: balanced",
         "  solver: saga",
         "  n_jobs: -1",
+        "",
         "# grid-search",
         "grid-search:",
         "  do_grid_search: false",
