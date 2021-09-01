@@ -84,7 +84,7 @@ logreg:
 
 # grid-search
 grid-search:
-  do_grid_search: true
+  do_grid_search: false
   grid_search_params_path: hyperparams.py
 ```
 
