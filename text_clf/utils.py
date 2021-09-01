@@ -104,3 +104,21 @@ def get_grid_search_params(grid_search_params_path: str) -> Dict[str, Any]:
     grid_search_params = hyperparams.grid_search_params  # type: ignore
 
     return grid_search_params
+
+
+def prepare_dict_to_print(dict: Dict[str, Any]) -> str:
+    """
+    Helper function to create pretty string to print dictionary.
+
+    :param Dict[str, Any] dict: arbitrary dictionary.
+    :return: pretty string to print dictionary.
+    :rtype: str
+    """
+
+    sorted_items = sorted(dict.items(), key=lambda x: x[0])
+
+    pretty_string = ""
+    for k, v in sorted_items:
+        pretty_string += f"{k}: {v}\n"
+
+    return pretty_string
