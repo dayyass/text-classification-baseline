@@ -76,6 +76,8 @@ def _train(
         )
         grid = GridSearchCV(pipe, **grid_search_params)
         grid.fit(X_train, y_train)
+
+        pipe = grid.best_estimator_
     else:
         pipe.fit(X_train, y_train)
 
