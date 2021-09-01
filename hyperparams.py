@@ -6,7 +6,6 @@ grid_search_params = {
         "tf-idf__min_df": [1, 5],
         "logreg__penalty": ["l1", "l2"],
         "logreg__C": [1.0, 0.1],
-        "logreg__class_weight": [None, "balanced"],
     },
     "scoring": "f1_weighted",
     "cv": 3,
