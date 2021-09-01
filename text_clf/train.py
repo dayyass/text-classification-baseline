@@ -57,15 +57,15 @@ def _train(
     )
 
     # pipeline
-    logger.info("Fitting TF-IDF + LogReg model...")
-
     pipe = Pipeline(
         [
             ("tf-idf", vectorizer),
             ("logreg", clf),
         ],
-        verbose=config["verbose"],
+        verbose=False if config["grid-search"]["do_grid_search"] else True,
     )
+
+    logger.info("Fitting TF-IDF + LogReg model...")
 
     start_time = time.time()
 
