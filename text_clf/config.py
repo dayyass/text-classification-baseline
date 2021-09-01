@@ -18,9 +18,6 @@ def get_config(path_to_config: str) -> Dict[str, Any]:
     :rtype: Dict[str, Any]
     """
 
-    if not os.path.exists(path_to_config):
-        load_default_config()
-
     with open(path_to_config, mode="r") as fp:
         config = yaml.safe_load(fp)
 

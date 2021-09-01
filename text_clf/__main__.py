@@ -5,7 +5,7 @@ from .train import _train
 from .utils import close_logger, get_argparse, get_logger
 
 
-def train(path_to_config: str = "config.yaml") -> None:
+def train(path_to_config: str) -> None:
     """
     Function to train baseline model with exception handler.
 
