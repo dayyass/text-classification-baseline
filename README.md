@@ -24,20 +24,22 @@ pip install text-classification-baseline
 2. run pipeline:
 - either in **terminal**:
 ```shell script
-text-clf-train
+text-clf-train --path_to_config config.yaml
 ```
 - or in **python**:
 ```python3
 import text_clf
 
-text_clf.train()
+text_clf.train(path_to_config="config.yaml")
 ```
+
+**NOTE**: more about config file [here](https://github.com/dayyass/text-classification-baseline/tree/main#config).
 
 No data preparation is needed, only a **csv** file with two raw columns (with arbitrary names):
 - `text`
 - `target`
 
-**NOTE**: the **target** can be presented in any format, including text - not necessarily integers from *0* to *n_classes-1*.
+The **target** can be presented in any format, including text - not necessarily integers from *0* to *n_classes-1*.
 
 #### Config
 The user interface consists of two files:
