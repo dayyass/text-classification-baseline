@@ -10,7 +10,7 @@ from sklearn.preprocessing import LabelEncoder
 
 from .data import load_data
 from .save import save_model
-from .utils import close_logger, get_grid_search_params, set_seed
+from .utils import close_logger, get_grid_search_params, prepare_dict_to_print, set_seed
 
 
 def _train(
@@ -75,6 +75,11 @@ def _train(
         grid.fit(X_train, y_train)
 
         pipe = grid.best_estimator_
+
+        logger.info(
+            f"Best hyper-parameters:\n{prepare_dict_to_print(grid.best_params_)}"
+        )
+
     else:
         logger.info("Fitting TF-IDF + LogReg model...")
 
