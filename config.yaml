@@ -1,5 +1,4 @@
 seed: 42
-verbose: true
 path_to_save_folder: models
 
 # data
@@ -15,7 +14,7 @@ tf-idf:
   lowercase: true
   ngram_range: (1, 1)
   max_df: 1.0
-  min_df: 0.0
+  min_df: 1
 
 # logreg
 logreg:
@@ -23,5 +22,9 @@ logreg:
   C: 1.0
   class_weight: balanced
   solver: saga
-  multi_class: auto
   n_jobs: -1
+
+# grid-search
+grid-search:
+  do_grid_search: false
+  grid_search_params_path: hyperparams.py

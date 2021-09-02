@@ -1,16 +1,16 @@
 import logging
-import time
 from typing import Any, Dict
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import classification_report
+from sklearn.model_selection import GridSearchCV
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import LabelEncoder
 
 from .data import load_data
 from .save import save_model
-from .utils import close_logger, set_seed
+from .utils import close_logger, get_grid_search_params, prepare_dict_to_print, set_seed
 
 
 def _train(
@@ -57,21 +57,35 @@ def _train(
     )
 
     # pipeline
-    logger.info("Fitting TF-IDF + LogReg model...")
-
     pipe = Pipeline(
         [
             ("tf-idf", vectorizer),
             ("logreg", clf),
         ],
-        verbose=config["verbose"],
+        verbose=False if config["grid-search"]["do_grid_search"] else True,
     )
 
-    start_time = time.time()
-    pipe.fit(X_train, y_train)
+    if config["grid-search"]["do_grid_search"]:
+        logger.info("Finding best hyper-parameters...")
 
-    logger.info(f"Fitting time: {(time.time() - start_time):.2f} seconds")
+        grid_search_params = get_grid_search_params(
+            config["grid-search"]["grid_search_params_path"]
+        )
+        grid = GridSearchCV(pipe, **grid_search_params)
+        grid.fit(X_train, y_train)
 
+        pipe = grid.best_estimator_
+
+        logger.info(
+            f"Best hyper-parameters:\n{prepare_dict_to_print(grid.best_params_)}"
+        )
+
+    else:
+        logger.info("Fitting TF-IDF + LogReg model...")
+
+        pipe.fit(X_train, y_train)
+
+    logger.info("Done!")
     logger.info(f"TF-IDF number of features: {len(pipe['tf-idf'].vocabulary_)}")
 
     # metrics

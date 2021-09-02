@@ -18,9 +18,6 @@ def get_config(path_to_config: str) -> Dict[str, Any]:
     :rtype: Dict[str, Any]
     """
 
-    if not os.path.exists(path_to_config):
-        load_default_config()
-
     with open(path_to_config, mode="r") as fp:
         config = yaml.safe_load(fp)
 
@@ -82,7 +79,6 @@ def load_default_config(
 
     config = [
         "seed: 42",
-        "verbose: true",
         "path_to_save_folder: models",
         "",
         "# data",
@@ -98,7 +94,7 @@ def load_default_config(
         "  lowercase: true",
         "  ngram_range: (1, 1)",
         "  max_df: 1.0",
-        "  min_df: 0.0",
+        "  min_df: 1",
         "",
         "# logreg",
         "logreg:",
@@ -106,8 +102,12 @@ def load_default_config(
         "  C: 1.0",
         "  class_weight: balanced",
         "  solver: saga",
-        "  multi_class: auto",
         "  n_jobs: -1",
+        "",
+        "# grid-search",
+        "grid-search:",
+        "  do_grid_search: false",
+        "  grid_search_params_path: hyperparams.py",
     ]
 
     if os.path.exists(path):
