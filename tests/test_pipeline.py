@@ -32,7 +32,7 @@ class TestUsage(unittest.TestCase):
         Testing train function.
         """
 
-        train()
+        train(path_to_config="config.yaml")
 
     def test_train_grid_search(self) -> None:
         """
