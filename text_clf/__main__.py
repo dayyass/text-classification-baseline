@@ -6,10 +6,10 @@ from .utils import close_logger, get_argparse, get_logger
 
 
 def train(path_to_config: str) -> None:
-    """
-    Function to train baseline model with exception handler.
+    """Function to train baseline model with exception handler.
 
-    :param str path_to_config: path to config.
+    Args:
+        path_to_config (str): Path to config.
     """
 
     # load config
@@ -30,11 +30,10 @@ def train(path_to_config: str) -> None:
 
 
 def main() -> int:
-    """
-    Main function to train baseline model.
+    """Main function to train baseline model.
 
-    :return: exit code.
-    :rtype: int
+    Returns:
+        int: Exit code.
     """
 
     # argument parser

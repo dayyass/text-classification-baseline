@@ -6,12 +6,13 @@ from sklearn.utils import Bunch
 
 
 def make_df_from_bunch(bunch: Bunch) -> pd.DataFrame:
-    """
-    Make pd.DataFrame from 20newsgroups bunch.
+    """Make pd.DataFrame from 20newsgroups bunch.
 
-    :param Bunch bunch: 20newsgroups bunch.
-    :return: 20newsgroups DataFrame.
-    :rtype: pd.DataFrame
+    Args:
+        bunch (Bunch): 20newsgroups bunch.
+
+    Returns:
+        pd.DataFrame: 20newsgroups DataFrame.
     """
 
     df = pd.DataFrame(
@@ -27,8 +28,7 @@ def make_df_from_bunch(bunch: Bunch) -> pd.DataFrame:
 
 
 def load_20newsgroups() -> None:
-    """
-    Load 20newsgroups dataset.
+    """Load 20newsgroups dataset.
     """
 
     train_bunch = fetch_20newsgroups(subset="train")

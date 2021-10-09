@@ -18,11 +18,11 @@ def _train(
     config: Dict[str, Any],
     logger: logging.Logger,
 ) -> None:
-    """
-    Function to train baseline model.
+    """Function to train baseline model.
 
-    :param Dict[str, Any] config: config.
-    :param logging.Logger logger: logger.
+    Args:
+        config (Dict[str, Any]): Config.
+        logger (logging.Logger): Logger.
     """
 
     # log config
