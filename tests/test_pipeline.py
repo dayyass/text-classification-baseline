@@ -9,13 +9,11 @@ from text_clf.config import load_default_config
 
 
 class TestUsage(unittest.TestCase):
-    """Class for testing pipeline.
-    """
+    """Class for testing pipeline."""
 
     @classmethod
     def setUpClass(cls) -> None:
-        """SetUp tests with config and data.
-        """
+        """SetUp tests with config and data."""
 
         path_to_config = "config.yaml"
 
@@ -26,14 +24,12 @@ class TestUsage(unittest.TestCase):
         load_20newsgroups()
 
     def test_train(self) -> None:
-        """Testing train function.
-        """
+        """Testing train function."""
 
         train(path_to_config="config.yaml")
 
     def test_train_grid_search(self) -> None:
-        """Testing train function with grid_search.
-        """
+        """Testing train function with grid_search."""
 
         with open("config.yaml", mode="r") as fp:
             config = yaml.safe_load(fp)
@@ -52,8 +48,7 @@ class TestUsage(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls) -> None:
-        """TearDown after tests.
-        """
+        """TearDown after tests."""
 
         os.remove("config_grid_search.yaml")
 

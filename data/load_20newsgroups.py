@@ -28,8 +28,7 @@ def make_df_from_bunch(bunch: Bunch) -> pd.DataFrame:
 
 
 def load_20newsgroups() -> None:
-    """Load 20newsgroups dataset.
-    """
+    """Load 20newsgroups dataset."""
 
     train_bunch = fetch_20newsgroups(subset="train")
     test_bunch = fetch_20newsgroups(subset="test")
