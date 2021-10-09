@@ -4,5 +4,5 @@ Folder for storing datasets.
 
 To download [**the 20 newsgroups text dataset**](https://scikit-learn.org/stable/datasets/real_world.html#newsgroups-dataset) run the following command:
 ```
-python fetch_20newsgroups.py
+python load_20newsgroups.py
 ```
