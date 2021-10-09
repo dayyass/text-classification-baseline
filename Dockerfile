@@ -4,6 +4,7 @@ MAINTAINER Dani El-Ayyass <dayyass@yandex.ru>
 WORKDIR /workdir
 
 COPY config.yaml ./
+COPY hyperparams.py ./
 COPY data/train.csv data/test.csv data/
 
 RUN pip install --upgrade pip && \

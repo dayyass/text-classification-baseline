@@ -101,6 +101,7 @@ After training the model, the pipeline will return the following files:
 - `model.joblib` - sklearn pipeline with TF-IDF and LogReg steps
 - `target_names.json` - mapping from encoded target labels from *0* to *n_classes-1* to it names
 - `config.yaml` - config that was used to train the model
+- `hyperparams.py` - grid-search parameters (if grid-search was used)
 - `logging.txt` - logging file
 
 ### Requirements
