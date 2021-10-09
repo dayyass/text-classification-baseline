@@ -35,15 +35,15 @@ def _train(
     # load data
     logger.info("Loading data...")
 
-    X_train, X_valid, y_train, y_valid = load_data(config)
+    X_train, X_test, y_train, y_test = load_data(config)
 
     logger.info(f"Train dataset size: {X_train.shape[0]}")
-    logger.info(f"Valid dataset size: {X_valid.shape[0]}")
+    logger.info(f"Test dataset size: {X_test.shape[0]}")
 
     # label encoder
     le = LabelEncoder()
     y_train = le.fit_transform(y_train)
-    y_valid = le.transform(y_valid)
+    y_test = le.transform(y_test)
 
     target_names = [str(cls) for cls in le.classes_.tolist()]
     target_names_mapping = {i: cls for i, cls in enumerate(target_names)}
@@ -101,25 +101,25 @@ def _train(
 
     logger.info(f"Train classification report:\n\n{classification_report_train}")
 
-    y_pred_valid = pipe.predict(X_valid)
-    classification_report_valid = classification_report(
-        y_true=y_valid,
-        y_pred=y_pred_valid,
+    y_pred_test = pipe.predict(X_test)
+    classification_report_test = classification_report(
+        y_true=y_test,
+        y_pred=y_pred_test,
         target_names=target_names,
     )
 
-    logger.info(f"Valid classification report:\n\n{classification_report_valid}")
+    logger.info(f"Test classification report:\n\n{classification_report_test}")
 
     conf_matrix = pd.DataFrame(
         confusion_matrix(
-            y_true=y_valid,
-            y_pred=y_pred_valid,
+            y_true=y_test,
+            y_pred=y_pred_test,
         ),
         columns=target_names,
         index=target_names,
     )
 
-    logger.info(f"Valid confusion matrix:\n\n{conf_matrix}\n")
+    logger.info(f"Test confusion matrix:\n\n{conf_matrix}\n")
 
     # save model
     logger.info("Saving the model...")

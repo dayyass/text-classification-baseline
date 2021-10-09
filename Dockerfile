@@ -4,7 +4,7 @@ MAINTAINER Dani El-Ayyass <dayyass@yandex.ru>
 WORKDIR /workdir
 
 COPY config.yaml ./
-COPY data/train.csv data/valid.csv data/
+COPY data/train.csv data/test.csv data/
 
 RUN pip install --upgrade pip && \
     pip install --no-cache-dir text-classification-baseline

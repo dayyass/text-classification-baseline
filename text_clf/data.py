@@ -10,7 +10,7 @@ def load_data(
     Load data.
 
     :param Dict[str, Any] config: config.
-    :return: X_train, X_valid, y_train, y_valid.
+    :return: X_train, X_test, y_train, y_test.
     :rtype: Tuple[pd.Series, pd.Series, pd.Series, pd.Series]
     """
 
@@ -26,15 +26,15 @@ def load_data(
         usecols=usecols,
     )
 
-    df_valid = pd.read_csv(
-        config["data"]["valid_data_path"],
+    df_test = pd.read_csv(
+        config["data"]["test_data_path"],
         sep=sep,
         usecols=usecols,
     )
 
     X_train = df_train[text_column]
-    X_valid = df_valid[text_column]
+    X_test = df_test[text_column]
     y_train = df_train[target_column]
-    y_valid = df_valid[target_column]
+    y_test = df_test[target_column]
 
-    return X_train, X_valid, y_train, y_valid
+    return X_train, X_test, y_train, y_test
