@@ -84,7 +84,7 @@ def load_default_config(
         "# data",
         "data:",
         "  train_data_path: data/train.csv",
-        "  valid_data_path: data/valid.csv",
+        "  test_data_path: data/test.csv",
         "  sep: ','",
         "  text_column: text",
         "  target_column: target_name_short",

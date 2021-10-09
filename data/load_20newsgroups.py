@@ -35,12 +35,12 @@ def load_20newsgroups() -> None:
     test_bunch = fetch_20newsgroups(subset="test")
 
     df_train = make_df_from_bunch(train_bunch)
-    df_valid = make_df_from_bunch(test_bunch)
+    df_test = make_df_from_bunch(test_bunch)
 
     os.makedirs("data", exist_ok=True)
 
     df_train.to_csv("data/train.csv", index=False)
-    df_valid.to_csv("data/valid.csv", index=False)
+    df_test.to_csv("data/test.csv", index=False)
 
 
 if __name__ == "__main__":
