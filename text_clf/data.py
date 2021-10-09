@@ -6,12 +6,13 @@ import pandas as pd
 def load_data(
     config: Dict[str, Any]
 ) -> Tuple[pd.Series, pd.Series, pd.Series, pd.Series]:
-    """
-    Load data.
+    """Load data.
 
-    :param Dict[str, Any] config: config.
-    :return: X_train, X_test, y_train, y_test.
-    :rtype: Tuple[pd.Series, pd.Series, pd.Series, pd.Series]
+    Args:
+        config (Dict[str, Any]): Config.
+
+    Returns:
+        Tuple[pd.Series, pd.Series, pd.Series, pd.Series]: X_train, X_test, y_train, y_test.
     """
 
     text_column = config["data"]["text_column"]

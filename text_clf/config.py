@@ -10,12 +10,13 @@ import yaml
 
 
 def get_config(path_to_config: str) -> Dict[str, Any]:
-    """
-    Get config.
+    """Get config.
 
-    :param str path_to_config: path to config.
-    :return: config.
-    :rtype: Dict[str, Any]
+    Args:
+        path_to_config (str): Path to config.
+
+    Returns:
+        Dict[str, Any]: Config.
     """
 
     with open(path_to_config, mode="r") as fp:
@@ -55,11 +56,14 @@ def load_default_config(
     path_to_save_folder: str = ".",
     filename: str = "config.yaml",
 ) -> None:
-    """
-    Function to load default config.
+    """Function to load default config.
 
-    :param str path_to_save_folder: path to save folder (default: '.').
-    :param str filename: filename (default: 'config.yaml').
+    Args:
+        path_to_save_folder (str, optional): Path to save folder. Defaults to ".".
+        filename (str, optional): Filename. Defaults to "config.yaml".
+
+    Raises:
+        FileExistsError: Raise error if config file already exists.
     """
 
     # get logger
