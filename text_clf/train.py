@@ -1,9 +1,10 @@
 import logging
 from typing import Any, Dict
 
+import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.model_selection import GridSearchCV
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import LabelEncoder
@@ -108,6 +109,17 @@ def _train(
     )
 
     logger.info(f"Valid classification report:\n\n{classification_report_valid}")
+
+    conf_matrix = pd.DataFrame(
+        confusion_matrix(
+            y_true=y_valid,
+            y_pred=y_pred_valid,
+        ),
+        columns=target_names,
+        index=target_names,
+    )
+
+    logger.info(f"Valid confusion matrix:\n\n{conf_matrix}\n")
 
     # save model
     logger.info("Saving the model...")
