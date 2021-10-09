@@ -1,5 +1,5 @@
 import logging
-from typing import Any, Dict
+from typing import Any, Dict, Tuple
 
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -17,12 +17,15 @@ from .utils import close_logger, get_grid_search_params, prepare_dict_to_print, 
 def _train(
     config: Dict[str, Any],
     logger: logging.Logger,
-) -> None:
+) -> Tuple[Pipeline, Dict[int, str]]:
     """Function to train baseline model.
 
     Args:
         config (Dict[str, Any]): Config.
         logger (logging.Logger): Logger.
+
+    Returns:
+        Tuple[Pipeline, Dict[int, str]]: Model pipe and target names mapping.
     """
 
     # log config
@@ -133,3 +136,5 @@ def _train(
     logger.info("Done!")
 
     close_logger(logger)
+
+    return pipe, target_names_mapping
