@@ -101,8 +101,17 @@ def _train(
         y_pred=y_pred_train,
         target_names=target_names,
     )
+    conf_matrix_train = pd.DataFrame(
+        confusion_matrix(
+            y_true=y_train,
+            y_pred=y_pred_train,
+        ),
+        columns=target_names,
+        index=target_names,
+    )
 
     logger.info(f"Train classification report:\n\n{classification_report_train}")
+    logger.info(f"Train confusion matrix:\n\n{conf_matrix_train}\n")
 
     y_pred_test = pipe.predict(X_test)
     classification_report_test = classification_report(
@@ -110,10 +119,7 @@ def _train(
         y_pred=y_pred_test,
         target_names=target_names,
     )
-
-    logger.info(f"Test classification report:\n\n{classification_report_test}")
-
-    conf_matrix = pd.DataFrame(
+    conf_matrix_test = pd.DataFrame(
         confusion_matrix(
             y_true=y_test,
             y_pred=y_pred_test,
@@ -122,7 +128,8 @@ def _train(
         index=target_names,
     )
 
-    logger.info(f"Test confusion matrix:\n\n{conf_matrix}\n")
+    logger.info(f"Test classification report:\n\n{classification_report_test}")
+    logger.info(f"Test confusion matrix:\n\n{conf_matrix_test}\n")
 
     # save model
     logger.info("Saving the model...")
