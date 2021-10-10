@@ -30,7 +30,7 @@ text-clf-train --path_to_config config.yaml
 ```python3
 import text_clf
 
-text_clf.train(path_to_config="config.yaml")
+model, target_names_mapping = text_clf.train(path_to_config="config.yaml")
 ```
 
 **NOTE**: more about config file [here](https://github.com/dayyass/text-classification-baseline/tree/main#config).
@@ -55,7 +55,7 @@ text-clf-train --path_to_config config.yaml
 ```python3
 import text_clf
 
-text_clf.train(path_to_config="config.yaml")
+model, target_names_mapping = text_clf.train(path_to_config="config.yaml")
 ```
 
 Default **config.yaml**:
