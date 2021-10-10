@@ -16,7 +16,7 @@ def train(path_to_config: str) -> Tuple[Pipeline, Dict[int, str]]:
 
     Returns:
         Tuple[Pipeline, Dict[int, str]]:
-        Model pipe and target names mapping. Both None if any exception occurred.
+        Model pipeline (tf-idf + logreg) and target names mapping. Both None if any exception occurred.
     """
 
     # load config

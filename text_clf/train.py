@@ -25,7 +25,7 @@ def _train(
         logger (logging.Logger): Logger.
 
     Returns:
-        Tuple[Pipeline, Dict[int, str]]: Model pipe and target names mapping.
+        Tuple[Pipeline, Dict[int, str]]: Model pipeline (tf-idf + logreg) and target names mapping.
     """
 
     # log config

@@ -12,13 +12,13 @@ def save_model(
     config: Dict[str, Any],
 ) -> None:
     """Save:
-        - model pipeline (tf-idf + model)
+        - model pipeline (tf-idf + logreg)
         - target names mapping
         - config
         - hyper-parameters grid (from config)
 
     Args:
-        pipe (Pipeline): Model pipeline (tf-idf + model).
+        pipe (Pipeline): Model pipeline (tf-idf + logreg).
         target_names_mapping (Dict[int, str]): Name for each class.
         config (Dict[str, Any]): Config.
     """
