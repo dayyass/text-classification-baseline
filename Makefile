@@ -14,5 +14,7 @@ pypi_build:
 	python -m build
 pypi_twine:
 	python -m twine upload --repository testpypi dist/*
+pypi_clean:
+	rm -rf dist text_classification_baseline.egg-info
 clean:
 	rm -rf models/model*
