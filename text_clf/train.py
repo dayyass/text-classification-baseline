@@ -1,9 +1,10 @@
 import logging
-from typing import Any, Dict
+from typing import Any, Dict, Tuple
 
+import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import classification_report
+from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.model_selection import GridSearchCV
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import LabelEncoder
@@ -16,12 +17,15 @@ from .utils import close_logger, get_grid_search_params, prepare_dict_to_print, 
 def _train(
     config: Dict[str, Any],
     logger: logging.Logger,
-) -> None:
-    """
-    Function to train baseline model.
+) -> Tuple[Pipeline, Dict[int, str]]:
+    """Function to train baseline model.
 
-    :param Dict[str, Any] config: config.
-    :param logging.Logger logger: logger.
+    Args:
+        config (Dict[str, Any]): Config.
+        logger (logging.Logger): Logger.
+
+    Returns:
+        Tuple[Pipeline, Dict[int, str]]: Model pipeline (tf-idf + logreg) and target names mapping.
     """
 
     # log config
@@ -34,15 +38,15 @@ def _train(
     # load data
     logger.info("Loading data...")
 
-    X_train, X_valid, y_train, y_valid = load_data(config)
+    X_train, X_test, y_train, y_test = load_data(config)
 
     logger.info(f"Train dataset size: {X_train.shape[0]}")
-    logger.info(f"Valid dataset size: {X_valid.shape[0]}")
+    logger.info(f"Test dataset size: {X_test.shape[0]}")
 
     # label encoder
     le = LabelEncoder()
     y_train = le.fit_transform(y_train)
-    y_valid = le.transform(y_valid)
+    y_test = le.transform(y_test)
 
     target_names = [str(cls) for cls in le.classes_.tolist()]
     target_names_mapping = {i: cls for i, cls in enumerate(target_names)}
@@ -97,17 +101,35 @@ def _train(
         y_pred=y_pred_train,
         target_names=target_names,
     )
-
-    logger.info(f"Train classification report:\n\n{classification_report_train}")
-
-    y_pred_valid = pipe.predict(X_valid)
-    classification_report_valid = classification_report(
-        y_true=y_valid,
-        y_pred=y_pred_valid,
-        target_names=target_names,
+    conf_matrix_train = pd.DataFrame(
+        confusion_matrix(
+            y_true=y_train,
+            y_pred=y_pred_train,
+        ),
+        columns=target_names,
+        index=target_names,
     )
 
-    logger.info(f"Valid classification report:\n\n{classification_report_valid}")
+    logger.info(f"Train classification report:\n\n{classification_report_train}")
+    logger.info(f"Train confusion matrix:\n\n{conf_matrix_train}\n")
+
+    y_pred_test = pipe.predict(X_test)
+    classification_report_test = classification_report(
+        y_true=y_test,
+        y_pred=y_pred_test,
+        target_names=target_names,
+    )
+    conf_matrix_test = pd.DataFrame(
+        confusion_matrix(
+            y_true=y_test,
+            y_pred=y_pred_test,
+        ),
+        columns=target_names,
+        index=target_names,
+    )
+
+    logger.info(f"Test classification report:\n\n{classification_report_test}")
+    logger.info(f"Test confusion matrix:\n\n{conf_matrix_test}\n")
 
     # save model
     logger.info("Saving the model...")
@@ -121,3 +143,5 @@ def _train(
     logger.info("Done!")
 
     close_logger(logger)
+
+    return pipe, target_names_mapping

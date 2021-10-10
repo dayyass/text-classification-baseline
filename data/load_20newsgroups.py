@@ -6,12 +6,13 @@ from sklearn.utils import Bunch
 
 
 def make_df_from_bunch(bunch: Bunch) -> pd.DataFrame:
-    """
-    Make pd.DataFrame from 20newsgroups bunch.
+    """Make pd.DataFrame from 20newsgroups bunch.
 
-    :param Bunch bunch: 20newsgroups bunch.
-    :return: 20newsgroups DataFrame.
-    :rtype: pd.DataFrame
+    Args:
+        bunch (Bunch): 20newsgroups bunch.
+
+    Returns:
+        pd.DataFrame: 20newsgroups DataFrame.
     """
 
     df = pd.DataFrame(
@@ -27,20 +28,18 @@ def make_df_from_bunch(bunch: Bunch) -> pd.DataFrame:
 
 
 def load_20newsgroups() -> None:
-    """
-    Load 20newsgroups dataset.
-    """
+    """Load 20newsgroups dataset."""
 
     train_bunch = fetch_20newsgroups(subset="train")
     test_bunch = fetch_20newsgroups(subset="test")
 
     df_train = make_df_from_bunch(train_bunch)
-    df_valid = make_df_from_bunch(test_bunch)
+    df_test = make_df_from_bunch(test_bunch)
 
     os.makedirs("data", exist_ok=True)
 
     df_train.to_csv("data/train.csv", index=False)
-    df_valid.to_csv("data/valid.csv", index=False)
+    df_test.to_csv("data/test.csv", index=False)
 
 
 if __name__ == "__main__":

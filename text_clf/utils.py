@@ -9,11 +9,10 @@ import numpy as np
 
 
 def get_argparse() -> ArgumentParser:
-    """
-    Get argument parser.
+    """Get argument parser.
 
-    :return: argument parser.
-    :rtype: ArgumentParser
+    Returns:
+        ArgumentParser: Argument parser.
     """
 
     parser = ArgumentParser(prog="text-clf-train")
@@ -28,12 +27,13 @@ def get_argparse() -> ArgumentParser:
 
 
 def get_logger(path_to_logfile: str) -> logging.Logger:
-    """
-    Get logger.
+    """Get logger.
 
-    :param str path_to_logfile: path to logfile.
-    :return: logger.
-    :rtype: logging.Logger
+    Args:
+        path_to_logfile (str): Path to logfile.
+
+    Returns:
+        logging.Logger: Logger.
     """
 
     logger = logging.getLogger("text-clf-train")
@@ -61,11 +61,11 @@ def get_logger(path_to_logfile: str) -> logging.Logger:
 
 
 def close_logger(logger: logging.Logger) -> None:
-    """
-    Close logger.
+    """Close logger.
     Source: https://stackoverflow.com/questions/15435652/python-does-not-release-filehandles-to-logfile
 
-    :param logging.Logger logger: logger.
+    Args:
+        logger (logging.Logger): Logger.
     """
 
     for handler in logger.handlers[:]:
@@ -74,10 +74,10 @@ def close_logger(logger: logging.Logger) -> None:
 
 
 def set_seed(seed: int) -> None:
-    """
-    Set seed for reproducibility.
+    """Set seed for reproducibility.
 
-    :param int seed: seed.
+    Args:
+        seed (int): Seed.
     """
 
     random.seed(seed)
@@ -85,12 +85,13 @@ def set_seed(seed: int) -> None:
 
 
 def get_grid_search_params(grid_search_params_path: str) -> Dict[str, Any]:
-    """
-    Get grid_search_params from python file.
+    """Get grid_search_params from python file.
 
-    :param str grid_search_params_path: python file with grid_search_params.
-    :return: grid_search_params.
-    :rtype: Dict[str, Any]
+    Args:
+        grid_search_params_path (str): Python file with grid_search_params.
+
+    Returns:
+        Dict[str, Any]: grid_search_params.
     """
 
     spec = importlib.util.spec_from_file_location(  # type: ignore
@@ -106,12 +107,13 @@ def get_grid_search_params(grid_search_params_path: str) -> Dict[str, Any]:
 
 
 def prepare_dict_to_print(dict: Dict[str, Any]) -> str:
-    """
-    Helper function to create pretty string to print dictionary.
+    """Helper function to create pretty string to print dictionary.
 
-    :param Dict[str, Any] dict: arbitrary dictionary.
-    :return: pretty string to print dictionary.
-    :rtype: str
+    Args:
+        dict (Dict[str, Any]): Arbitrary dictionary.
+
+    Returns:
+        str: Pretty string to print dictionary.
     """
 
     sorted_items = sorted(dict.items(), key=lambda x: x[0])
