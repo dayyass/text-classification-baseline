@@ -11,7 +11,7 @@ class TestUsage(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        """SetUp tests with config and data."""
+        """SetUp tests with data."""
 
         load_20newsgroups()
 
