@@ -12,7 +12,7 @@ data:
 # preprocessing
 # (included in resulting model pipeline, so preserved for inference)
 preprocessing:
-  lemmatization: null  # pymorphy2
+  lemmatization: spacy
 
 # tf-idf
 tf-idf:

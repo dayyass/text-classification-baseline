@@ -1,11 +1,9 @@
-import os
 import unittest
 
-import yaml
+from parameterized import parameterized
 
 from data.load_20newsgroups import load_20newsgroups
 from text_clf.__main__ import train
-from text_clf.config import load_default_config
 
 
 class TestUsage(unittest.TestCase):
@@ -15,42 +13,34 @@ class TestUsage(unittest.TestCase):
     def setUpClass(cls) -> None:
         """SetUp tests with config and data."""
 
-        path_to_config = "config.yaml"
-
-        if os.path.exists(path_to_config):
-            os.remove(path_to_config)
-
-        load_default_config()
         load_20newsgroups()
 
-    def test_train(self) -> None:
+    @parameterized.expand(
+        [
+            ("tests/config/config.yaml",),
+            ("tests/config/config_pymorphy2.yaml",),
+            ("tests/config/config_grid_search.yaml",),
+        ]
+    )
+    def test_train(self, path_to_config) -> None:
         """Testing train function."""
 
-        train(path_to_config="config.yaml")
+        print(f"Config: {path_to_config}\n")
 
-    def test_train_grid_search(self) -> None:
-        """Testing train function with grid_search."""
+        train(path_to_config=path_to_config)
+        self.assertTrue(True)
 
-        with open("config.yaml", mode="r") as fp:
-            config = yaml.safe_load(fp)
+    def test_train_error(self) -> None:
+        """Testing train function."""
 
-        config["grid-search"]["do_grid_search"] = True
-        config["grid-search"][
-            "grid_search_params_path"
-        ] = "tests/hyperparams_for_tests.py"
+        print("Config: tests/config/config_lemmatizer_error.yaml\n")
 
-        config_grid_search_path = "config_grid_search.yaml"
-
-        with open(config_grid_search_path, mode="w") as fp:
-            yaml.safe_dump(config, fp)
-
-        train(path_to_config=config_grid_search_path)
-
-    @classmethod
-    def tearDownClass(cls) -> None:
-        """TearDown after tests."""
-
-        os.remove("config_grid_search.yaml")
+        try:
+            train(path_to_config="tests/config/config_lemmatizer_error.yaml")
+        except KeyError:
+            self.assertTrue(True)
+        except:  # noqa
+            self.assertTrue(False)
 
 
 if __name__ == "__main__":
