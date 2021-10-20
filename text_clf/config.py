@@ -1,8 +1,5 @@
 import ast
 import datetime
-import logging
-import os
-import sys
 from pathlib import Path
 from typing import Any, Dict
 
@@ -67,84 +64,3 @@ def get_config(path_to_config: str) -> Dict[str, Any]:
         config["logreg"] = {}
 
     return config
-
-
-def load_default_config(
-    path_to_save_folder: str = ".",
-    filename: str = "config.yaml",
-) -> None:
-    """Function to load default config.
-
-    Args:
-        path_to_save_folder (str, optional): Path to save folder. Defaults to ".".
-        filename (str, optional): Filename. Defaults to "config.yaml".
-
-    Raises:
-        FileExistsError: Raise error if config file already exists.
-    """
-
-    # get logger
-    logger = logging.getLogger("text-clf-load-config")
-    logger.setLevel(logging.INFO)
-
-    stream_handler = logging.StreamHandler(sys.stdout)
-    stream_handler.setLevel(logging.INFO)
-
-    stream_format = logging.Formatter("%(name)s - %(levelname)s - %(message)s")
-    stream_handler.setFormatter(stream_format)
-
-    logger.addHandler(stream_handler)
-
-    # default config
-    path = os.path.join(path_to_save_folder, filename)
-
-    config = [
-        "seed: 42",
-        "path_to_save_folder: models",
-        "",
-        "# data",
-        "data:",
-        "  train_data_path: data/train.csv",
-        "  test_data_path: data/test.csv",
-        "  sep: ','",
-        "  text_column: text",
-        "  target_column: target_name_short",
-        "",
-        "# preprocessing",
-        "# (included in resulting model pipeline, so preserved for inference)",
-        "preprocessing:",
-        "  lemmatization: null  # pymorphy2",
-        "",
-        "# tf-idf",
-        "tf-idf:",
-        "  lowercase: true",
-        "  ngram_range: (1, 1)",
-        "  max_df: 1.0",
-        "  min_df: 1",
-        "",
-        "# logreg",
-        "logreg:",
-        "  penalty: l2",
-        "  C: 1.0",
-        "  class_weight: balanced",
-        "  solver: saga",
-        "  n_jobs: -1",
-        "",
-        "# grid-search",
-        "grid-search:",
-        "  do_grid_search: false",
-        "  grid_search_params_path: hyperparams.py",
-    ]
-
-    if os.path.exists(path):
-        error_msg = f"Config {path} already exists."
-
-        logger.error(error_msg)
-        raise FileExistsError(error_msg)
-
-    else:
-        with open(path, mode="w") as fp:
-            for line in config:
-                fp.write(f"{line}\n")
-
-        logger.info(f"Default config {path} successfully loaded.")
