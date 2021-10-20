@@ -8,6 +8,8 @@ from typing import Any, Dict
 
 import yaml
 
+from .lemmatizer import LemmatizerPymorphy2, Preprocessor
+
 
 def get_config(path_to_config: str) -> Dict[str, Any]:
     """Get config.
@@ -44,6 +46,21 @@ def get_config(path_to_config: str) -> Dict[str, Any]:
         config["tf-idf"]["ngram_range"] = ast.literal_eval(
             config["tf-idf"]["ngram_range"]
         )
+
+    if "preprocessing" in config:
+        lemmatization = config["preprocessing"]["lemmatization"]
+
+        if lemmatization:
+            if lemmatization == "pymorphy2":
+                lemmatizer = LemmatizerPymorphy2()
+                preprocessor = Preprocessor(lemmatizer)
+
+                config["tf-idf"]["preprocessor"] = preprocessor
+
+            else:
+                raise KeyError(
+                    f"Unknown lemmatizer {lemmatization}. Available lemmatizers: none, pymorphy2."
+                )
 
     # logreg
     if ("logreg" not in config) or (config["logreg"] is None):
