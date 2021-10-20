@@ -3,7 +3,7 @@ import unittest
 from parameterized import parameterized
 
 from data.load_20newsgroups import load_20newsgroups
-from text_clf.__main__ import train
+from text_clf import train
 
 
 class TestUsage(unittest.TestCase):
@@ -11,7 +11,7 @@ class TestUsage(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        """SetUp tests with config and data."""
+        """SetUp tests with data."""
 
         load_20newsgroups()
 
