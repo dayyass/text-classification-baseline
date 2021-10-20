@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import Dict
 
 import pymorphy2
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -25,10 +26,16 @@ class LemmatizerPymorphy2(AbstractLemmatizer):
     """Pymorphy2 lemmatizer."""
 
     def __init__(self) -> None:
-        self.morph = pymorphy2.MorphAnalyzer()
+        self.cache: Dict[str, str] = {}
+        self.lemmatizer = pymorphy2.MorphAnalyzer()
 
     def __call__(self, token: str) -> str:
-        lemma = self.morph.parse(token)[0].normal_form
+        if token in self.cache:
+            lemma = self.cache[token]
+        else:
+            lemma = self.lemmatizer.parse(token)[0].normal_form
+            self.cache[token] = lemma
+
         return lemma
 
 
