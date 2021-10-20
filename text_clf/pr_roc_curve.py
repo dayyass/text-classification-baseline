@@ -20,7 +20,19 @@ from .data import load_data
 def _get_model_and_data(
     path_to_model_folder: str,
 ) -> Tuple[Pipeline, np.ndarray, np.ndarray]:
-    """TODO"""
+    """Helper function to get model and data.
+
+    Args:
+        path_to_model_folder (str): Path to trained model folder.
+
+    Raises:
+        Exception: Not a binary classification error.
+        FileNotFoundError: No config error.
+        FileNotFoundError: More then 1 config error.
+
+    Returns:
+        Tuple[Pipeline, np.ndarray, np.ndarray]: model, X_test, y_test.
+    """
 
     # path_to_model
     path_to_model = os.path.join(path_to_model_folder, "model.joblib")
@@ -29,7 +41,7 @@ def _get_model_and_data(
     path_to_target_names = os.path.join(path_to_model_folder, "target_names.json")
     with open(path_to_target_names, mode="r") as fp:
         target_names = json.load(fp)
-    if len(target_names) != 2:  # not binary classification error
+    if len(target_names) != 2:  # not a binary classification error
         raise Exception(
             f"The model must have 2 classes, but has {len(target_names)} classes."
         )
@@ -61,7 +73,14 @@ def _get_model_and_data(
 def get_precision_recall_curve(
     path_to_model_folder: str,
 ) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
-    """TODO"""
+    """Get precision and recall metrics for precision-recall curve.
+
+    Args:
+        path_to_model_folder (str): Path to trained model folder.
+
+    Returns:
+        Tuple[np.ndarray, np.ndarray, np.ndarray]: precision, recall, thresholds.
+    """
 
     model, X_test, y_test = _get_model_and_data(path_to_model_folder)
 
@@ -76,7 +95,14 @@ def get_precision_recall_curve(
 def get_roc_curve(
     path_to_model_folder: str,
 ) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
-    """TODO"""
+    """Get fpr and tpr metrics for roc curve.
+
+    Args:
+        path_to_model_folder (str): Path to trained model folder.
+
+    Returns:
+        Tuple[np.ndarray, np.ndarray, np.ndarray]: fpr, tpr, thresholds
+    """
 
     model, X_test, y_test = _get_model_and_data(path_to_model_folder)
 
@@ -89,12 +115,28 @@ def get_roc_curve(
 def plot_precision_recall_curve(
     precision: np.np.ndarray, recall: np.np.ndarray
 ) -> PrecisionRecallDisplay:
-    """TODO"""
+    """Plot precision-recall curve.
+
+    Args:
+        precision (np.np.ndarray): Precision for different thresholds.
+        recall (np.np.ndarray): Recall for different thresholds.
+
+    Returns:
+        PrecisionRecallDisplay: Sklearn display object.
+    """
 
     return PrecisionRecallDisplay(precision=precision, recall=recall)
 
 
 def plot_roc_curve(fpr: np.np.ndarray, tpr: np.np.ndarray) -> RocCurveDisplay:
-    """TODO"""
+    """Plot roc curve.
+
+    Args:
+        fpr (np.np.ndarray): False positive rates for different thresholds.
+        tpr (np.np.ndarray): True positive rates for different thresholds.
+
+    Returns:
+        RocCurveDisplay: Sklearn display object.
+    """
 
     return RocCurveDisplay(fpr=fpr, tpr=tpr)
