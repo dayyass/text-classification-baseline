@@ -62,6 +62,7 @@ Default **config.yaml**:
 ```yaml
 seed: 42
 path_to_save_folder: models
+experiment_name: model
 
 # data
 data:
