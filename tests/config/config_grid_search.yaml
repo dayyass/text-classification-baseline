@@ -1,5 +1,6 @@
 seed: 42
 path_to_save_folder: models
+experiment_name: grid_search
 
 # data
 data:
@@ -8,11 +9,6 @@ data:
   sep: ','
   text_column: text
   target_column: target_name_short
-
-# preprocessing
-# (included in resulting model pipeline, so preserved for inference)
-preprocessing:
-  lemmatization: null  # pymorphy2
 
 # tf-idf
 tf-idf:
