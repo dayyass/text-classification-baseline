@@ -48,7 +48,7 @@ def get_config(path_to_config: str) -> Dict[str, Any]:
             config["tf-idf"]["ngram_range"]
         )
 
-    if "preprocessing" in config:
+    if "preprocessing" in config:  # backward compatibility
         lemmatization = config["preprocessing"]["lemmatization"]
 
         if lemmatization:
