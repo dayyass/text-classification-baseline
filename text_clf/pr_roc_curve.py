@@ -113,13 +113,13 @@ def get_roc_curve(
 
 
 def plot_precision_recall_curve(
-    precision: np.np.ndarray, recall: np.np.ndarray
+    precision: np.ndarray, recall: np.ndarray
 ) -> PrecisionRecallDisplay:
     """Plot precision-recall curve.
 
     Args:
-        precision (np.np.ndarray): Precision for different thresholds.
-        recall (np.np.ndarray): Recall for different thresholds.
+        precision (np.ndarray): Precision for different thresholds.
+        recall (np.ndarray): Recall for different thresholds.
 
     Returns:
         PrecisionRecallDisplay: Sklearn display object.
@@ -128,12 +128,12 @@ def plot_precision_recall_curve(
     return PrecisionRecallDisplay(precision=precision, recall=recall)
 
 
-def plot_roc_curve(fpr: np.np.ndarray, tpr: np.np.ndarray) -> RocCurveDisplay:
+def plot_roc_curve(fpr: np.ndarray, tpr: np.ndarray) -> RocCurveDisplay:
     """Plot roc curve.
 
     Args:
-        fpr (np.np.ndarray): False positive rates for different thresholds.
-        tpr (np.np.ndarray): True positive rates for different thresholds.
+        fpr (np.ndarray): False positive rates for different thresholds.
+        tpr (np.ndarray): True positive rates for different thresholds.
 
     Returns:
         RocCurveDisplay: Sklearn display object.
