@@ -1,5 +1,7 @@
 import unittest
 
+from parameterized import parameterized
+
 from text_clf.lemmatizer import LemmatizerPymorphy2, Preprocessor
 
 
@@ -16,28 +18,27 @@ class TestLemmatizer(unittest.TestCase):
         cls.lemmatizer = lemmatizer  # type: ignore
         cls.preprocessor = preprocessor  # type: ignore
 
-    def test_pymorphy2(self) -> None:
+    @parameterized.expand(
+        [
+            ("стали", "стать"),
+            ("думающему", "думать"),
+        ]
+    )
+    def test_pymorphy2(self, token, lemma_true) -> None:
         """Testing pymorphy2 lemmatizer."""
 
-        token = "стали"
-        lemma = self.lemmatizer(token)  # type: ignore
-        self.assertEqual(lemma, "стать")
+        lemma_pred = self.lemmatizer(token)  # type: ignore
+        self.assertEqual(lemma_true, lemma_pred)
 
-        token = "думающему"
-        lemma = self.lemmatizer(token)  # type: ignore
-        self.assertEqual(lemma, "думать")
-
-    def test_preprocessor(self) -> None:
+    @parameterized.expand(
+        [
+            ("стали", "стать"),
+            ("думающему", "думать"),
+            ("стали думающему", "стать думать"),
+        ]
+    )
+    def test_preprocessor(self, sentence, preprocessed_sentence_true) -> None:
         """Testing pymorphy2 lemmatizer."""
 
-        sentence = "стали"
-        preprocessed_sentence = self.preprocessor(sentence)  # type: ignore
-        self.assertEqual(preprocessed_sentence, "стать")
-
-        sentence = "думающему"
-        preprocessed_sentence = self.preprocessor(sentence)  # type: ignore
-        self.assertEqual(preprocessed_sentence, "думать")
-
-        sentence = "стали думающему"
-        preprocessed_sentence = self.preprocessor(sentence)  # type: ignore
-        self.assertEqual(preprocessed_sentence, "стать думать")
+        preprocessed_sentence_pred = self.preprocessor(sentence)  # type: ignore
+        self.assertEqual(preprocessed_sentence_true, preprocessed_sentence_pred)
