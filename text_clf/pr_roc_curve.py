@@ -3,7 +3,12 @@ from typing import Tuple
 
 import joblib
 import numpy as np
-from sklearn.metrics import precision_recall_curve, roc_curve
+from sklearn.metrics import (
+    PrecisionRecallDisplay,
+    RocCurveDisplay,
+    precision_recall_curve,
+    roc_curve,
+)
 from sklearn.pipeline import Pipeline
 
 from .config import get_config
@@ -56,3 +61,17 @@ def get_roc_curve(
     fpr, tpr, thresholds = roc_curve(y_true=y_test, probas_pred=y_test_probas_pred)
 
     return fpr, tpr, thresholds
+
+
+def plot_precision_recall_curve(
+    precision: np.np.ndarray, recall: np.np.ndarray
+) -> PrecisionRecallDisplay:
+    """TODO"""
+
+    return PrecisionRecallDisplay(precision=precision, recall=recall)
+
+
+def plot_roc_curve(fpr: np.np.ndarray, tpr: np.np.ndarray) -> RocCurveDisplay:
+    """TODO"""
+
+    return RocCurveDisplay(fpr=fpr, tpr=tpr)
