@@ -21,9 +21,13 @@ def get_config(path_to_config: str) -> Dict[str, Any]:
     with open(path_to_config, mode="r") as fp:
         config = yaml.safe_load(fp)
 
+    # backward compatibility
+    if "experiment_name" not in config:
+        config["experiment_name"] = "model"
+
     config["path_to_save_folder"] = (
         Path(config["path_to_save_folder"])
-        / f"model_{datetime.datetime.now().strftime('%Y-%m-%d %H-%M-%S')}"
+        / f"{config['experiment_name']}_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}"
     )
 
     # mkdir if not exists
