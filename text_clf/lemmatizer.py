@@ -26,10 +26,16 @@ class LemmatizerPymorphy2(AbstractLemmatizer):
     """Pymorphy2 lemmatizer."""
 
     def __init__(self) -> None:
+        """
+        Init pymorphy2 lemmatizer.
+        Use cache for better perfomance.
+        """
+
         self.cache: Dict[str, str] = {}
         self.lemmatizer = pymorphy2.MorphAnalyzer()
 
     def __call__(self, token: str) -> str:
+
         if token in self.cache:
             lemma = self.cache[token]
         else:
