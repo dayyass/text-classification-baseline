@@ -1,4 +1,5 @@
-from typing import Dict
+from collections import Counter
+from typing import Counter as CounterType
 
 import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer
@@ -7,7 +8,7 @@ from .config import get_config
 from .data import load_data
 
 
-def get_token_frequency(path_to_config: str) -> Dict[str, int]:
+def get_token_frequency(path_to_config: str) -> CounterType:
     """Get token frequency.
 
     Args:
@@ -29,8 +30,8 @@ def get_token_frequency(path_to_config: str) -> Dict[str, int]:
 
     # token frequency
     counter = np.asarray(X_train_vectorized.sum(axis=0)).squeeze(0)
-    token_frequency = {
-        token: counter[idx] for token, idx in vectorizer.vocabulary_.items()
-    }
+    token_frequency = Counter(
+        {token: counter[idx] for token, idx in vectorizer.vocabulary_.items()}
+    )
 
     return token_frequency
