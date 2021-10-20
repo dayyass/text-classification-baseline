@@ -9,7 +9,7 @@ class AbstractLemmatizer(ABC):
 
     @abstractmethod
     def __init__(self) -> None:
-        pass
+        ...
 
     @abstractmethod
     def __call__(self, token: str) -> str:
@@ -18,8 +18,7 @@ class AbstractLemmatizer(ABC):
         Args:
             token (str): Token for lemmatization.
         """
-
-        pass
+        ...
 
 
 class LemmatizerPymorphy2(AbstractLemmatizer):
