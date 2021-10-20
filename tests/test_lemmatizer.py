@@ -1,6 +1,6 @@
 import unittest
 
-from text_clf.lemmatizer import LemmatizerPymorphy2
+from text_clf.lemmatizer import LemmatizerPymorphy2, Preprocessor
 
 
 class TestLemmatizer(unittest.TestCase):
@@ -10,7 +10,11 @@ class TestLemmatizer(unittest.TestCase):
     def setUpClass(cls) -> None:
         """SetUp tests with lemmatizer and preprocessor."""
 
-        cls.lemmatizer = LemmatizerPymorphy2()  # type: ignore
+        lemmatizer = LemmatizerPymorphy2()
+        preprocessor = Preprocessor(lemmatizer)
+
+        cls.lemmatizer = lemmatizer  # type: ignore
+        cls.preprocessor = preprocessor  # type: ignore
 
     def test_pymorphy2(self) -> None:
         """Testing pymorphy2 lemmatizer."""
@@ -22,3 +26,18 @@ class TestLemmatizer(unittest.TestCase):
         token = "думающему"
         lemma = self.lemmatizer(token)  # type: ignore
         self.assertEqual(lemma, "думать")
+
+    def test_preprocessor(self) -> None:
+        """Testing pymorphy2 lemmatizer."""
+
+        sentence = "стали"
+        preprocessed_sentence = self.preprocessor(sentence)  # type: ignore
+        self.assertEqual(preprocessed_sentence, "стать")
+
+        sentence = "думающему"
+        preprocessed_sentence = self.preprocessor(sentence)  # type: ignore
+        self.assertEqual(preprocessed_sentence, "думать")
+
+        sentence = "стали думающему"
+        preprocessed_sentence = self.preprocessor(sentence)  # type: ignore
+        self.assertEqual(preprocessed_sentence, "стать думать")
