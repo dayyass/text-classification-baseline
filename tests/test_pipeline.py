@@ -3,7 +3,7 @@ import unittest
 from parameterized import parameterized
 
 from data.load_20newsgroups import load_20newsgroups
-from text_clf.__main__ import train
+from text_clf import train
 
 
 class TestUsage(unittest.TestCase):
