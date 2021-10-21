@@ -3,7 +3,7 @@ import unittest
 from parameterized import parameterized
 
 from data.load_20newsgroups import load_20newsgroups
-from text_clf import get_token_frequency
+from text_clf.token_frequency import get_token_frequency
 
 
 class TestTokenFrequency(unittest.TestCase):
