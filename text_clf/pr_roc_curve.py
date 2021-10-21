@@ -3,6 +3,8 @@ import os
 from typing import Tuple
 
 import joblib
+import matplotlib
+import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.metrics import (
     PrecisionRecallDisplay,
@@ -153,3 +155,32 @@ def plot_roc_curve(fpr: np.ndarray, tpr: np.ndarray) -> RocCurveDisplay:
     roc_auc = auc(fpr, tpr)
 
     return RocCurveDisplay(fpr=fpr, tpr=tpr, roc_auc=roc_auc)
+
+
+def plot_precision_recall_f1_curves_for_thresholds(
+    precision: np.ndarray, recall: np.ndarray, thresholds: np.ndarray
+) -> matplotlib.axes.Axes:
+    # TODO
+    """Plot precision, recall, f1 curves for thresholds.
+
+    Args:
+        precision (np.ndarray): Precision for different thresholds.
+        recall (np.ndarray): Recall for different thresholds.
+        thresholds (np.ndarray): Thresholds.
+
+    Returns:
+        matplotlib.axes.Axes: Matplotlib figure.
+    """
+
+    f1_score = 2 * precision * recall / (precision + recall)
+
+    _, ax = plt.subplots()
+
+    ax.plot(thresholds, precision[:-1], label="precision")
+    ax.plot(thresholds, recall[:-1], label="recall")
+    ax.plot(thresholds, f1_score[:-1], label="f1-score")
+
+    ax.set(xlabel="Threshold", ylabel="Precision / Recall / F1-score")
+    ax.legend()
+
+    return ax
