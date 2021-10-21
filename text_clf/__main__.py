@@ -22,6 +22,9 @@ def train(path_to_config: str) -> Tuple[Pipeline, Dict[int, str]]:
     # load config
     config = get_config(path_to_config=path_to_config)
 
+    # mkdir if not exists
+    config["path_to_save_folder"].absolute().mkdir(parents=True, exist_ok=True)
+
     # get logger
     logger = get_logger(path_to_logfile=config["path_to_save_logfile"])
 
