@@ -38,12 +38,12 @@ class TestTokenFrequency(unittest.TestCase):
     @parameterized.expand(
         [
             (
-                "tests/config/token_frequency/config.yaml",
+                "tests/config/config_russian.yaml",
                 68423,
                 [("не", 10301), ("на", 7003), ("что", 5986)],
             ),
             (
-                "tests/config/token_frequency/config_pymorphy2.yaml",
+                "tests/config/config_russian_pymorphy2.yaml",
                 35104,
                 [("не", 10301), ("на", 7003), ("что", 6417)],
             ),

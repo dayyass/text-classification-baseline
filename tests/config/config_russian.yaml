@@ -1,5 +1,6 @@
 seed: 42
-path_to_save_folder: models
+path_to_save_folder: tests/models
+experiment_name: russian
 
 # data
 data:

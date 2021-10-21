@@ -1,3 +1,5 @@
+import os
+import shutil
 import unittest
 
 from parameterized import parameterized
@@ -41,6 +43,14 @@ class TestUsage(unittest.TestCase):
             self.assertTrue(True)
         except:  # noqa
             self.assertTrue(False)
+
+    @classmethod
+    def tearDownClass(cls) -> None:
+        """tearDown tests with models remove."""
+
+        path_to_models_folder = "tests/models"
+        if os.path.exists(path_to_models_folder):
+            shutil.rmtree(path_to_models_folder)
 
 
 if __name__ == "__main__":
