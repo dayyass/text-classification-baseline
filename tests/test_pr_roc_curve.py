@@ -8,7 +8,12 @@ from sklearn.metrics import auc
 
 from data.load_20newsgroups import load_20newsgroups
 from text_clf import train
-from text_clf.pr_roc_curve import get_precision_recall_curve, get_roc_curve
+from text_clf.pr_roc_curve import (
+    get_precision_recall_curve,
+    get_roc_curve,
+    plot_precision_recall_curve,
+    plot_roc_curve,
+)
 
 
 class TestMetricCurves(unittest.TestCase):
@@ -33,8 +38,8 @@ class TestMetricCurves(unittest.TestCase):
             ("tests/models/russian_*",),
         ]
     )
-    def test_get_precision_recall_curve(self, path_to_model_folder_pattern) -> None:
-        """Testing get_precision_recall_curve function."""
+    def test_get_plot_curve(self, path_to_model_folder_pattern) -> None:
+        """Testing get/plot_*_curve functions."""
 
         path_to_model_folder_list = glob.glob(path_to_model_folder_pattern)
         assert len(path_to_model_folder_list) == 1
@@ -64,6 +69,13 @@ class TestMetricCurves(unittest.TestCase):
 
             self.assertGreater(pr_auc, 0.95)
             self.assertGreater(roc_auc, 0.98)
+
+            # plot
+            display_pr = plot_precision_recall_curve(precision, recall)
+            display_roc = plot_roc_curve(fpr, tpr)
+
+            display_pr.plot()
+            display_roc.plot()
 
     @classmethod
     def tearDownClass(cls) -> None:
