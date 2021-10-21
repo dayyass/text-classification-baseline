@@ -1,4 +1,3 @@
-import glob
 import json
 import os
 from typing import Tuple
@@ -41,13 +40,14 @@ def _get_model_and_data(
     path_to_target_names = os.path.join(path_to_model_folder, "target_names.json")
     with open(path_to_target_names, mode="r") as fp:
         target_names = json.load(fp)
-    if len(target_names) != 2:  # not a binary classification error
-        raise Exception(
-            f"The model must have 2 classes, but has {len(target_names)} classes."
-        )
+    assert (
+        len(target_names) == 2
+    ), f"The model must have 2 classes, but has {len(target_names)} classes."
 
     # path_to_config
-    path_to_model_folder_yaml_list = glob.glob("*.yaml")
+    path_to_model_folder_yaml_list = [
+        file for file in os.listdir(path_to_model_folder) if file.endswith(".yaml")
+    ]
     if len(path_to_model_folder_yaml_list) == 0:  # no config error
         raise FileNotFoundError("There is no config file (with .yaml extension).")
     elif len(path_to_model_folder_yaml_list) > 1:  # more then 1 config error
@@ -85,8 +85,13 @@ def get_precision_recall_curve(
     model, X_test, y_test = _get_model_and_data(path_to_model_folder)
 
     y_test_probas_pred = model.predict_proba(X_test)
+
+    assert (
+        y_test_probas_pred.shape[-1] == 2
+    ), f"The model must have 2 classes, but has {y_test_probas_pred.shape[-1]} classes."
+
     precision, recall, thresholds = precision_recall_curve(
-        y_true=y_test, probas_pred=y_test_probas_pred
+        y_true=y_test, probas_pred=y_test_probas_pred[:, -1]
     )
 
     return precision, recall, thresholds
@@ -107,7 +112,12 @@ def get_roc_curve(
     model, X_test, y_test = _get_model_and_data(path_to_model_folder)
 
     y_test_probas_pred = model.predict_proba(X_test)
-    fpr, tpr, thresholds = roc_curve(y_true=y_test, probas_pred=y_test_probas_pred)
+
+    assert (
+        y_test_probas_pred.shape[-1] == 2
+    ), f"The model must have 2 classes, but has {y_test_probas_pred.shape[-1]} classes."
+
+    fpr, tpr, thresholds = roc_curve(y_true=y_test, y_score=y_test_probas_pred[:, -1])
 
     return fpr, tpr, thresholds
 
