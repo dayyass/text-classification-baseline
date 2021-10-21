@@ -10,8 +10,9 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import LabelEncoder
 
 from .data import load_data
+from .logger import close_logger
 from .save import save_model
-from .utils import close_logger, get_grid_search_params, prepare_dict_to_print, set_seed
+from .utils import get_grid_search_params, prepare_dict_to_print, set_seed
 
 
 def _train(
