@@ -1,0 +1,36 @@
+seed: 42
+path_to_save_folder: tests/models
+experiment_name: spacy
+
+# data
+data:
+  train_data_path: data/train.csv
+  test_data_path: data/test.csv
+  sep: ','
+  text_column: text
+  target_column: target_name_short
+
+# preprocessing
+# (included in resulting model pipeline, so preserved for inference)
+preprocessing:
+  lemmatization: spacy
+
+# tf-idf
+tf-idf:
+  lowercase: true
+  ngram_range: (1, 1)
+  max_df: 1.0
+  min_df: 1
+
+# logreg
+logreg:
+  penalty: l2
+  C: 1.0
+  class_weight: balanced
+  solver: saga
+  n_jobs: -1
+
+# grid-search
+grid-search:
+  do_grid_search: false
+  grid_search_params_path: hyperparams.py

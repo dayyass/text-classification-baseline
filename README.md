@@ -12,10 +12,10 @@
 [![pypi version](https://img.shields.io/pypi/v/text-classification-baseline)](https://pypi.org/project/text-classification-baseline)
 [![pypi downloads](https://img.shields.io/pypi/dm/text-classification-baseline)](https://pypi.org/project/text-classification-baseline)
 
-### Text Classification Baseline
+## Text Classification Baseline
 Pipeline for fast building text classification baselines with **TF-IDF + LogReg**.
 
-### Usage
+## Usage
 Instead of writing custom code for specific text classification task, you just need:
 1. install pipeline:
 ```shell script
@@ -41,7 +41,7 @@ No data preparation is needed, only a **csv** file with two raw columns (with ar
 
 The **target** can be presented in any format, including text - not necessarily integers from *0* to *n_classes-1*.
 
-#### Config
+### Config
 The user interface consists of two files:
 - [**config.yaml**](https://github.com/dayyass/text-classification-baseline/blob/main/config.yaml) - general configuration with sklearn **TF-IDF** and **LogReg** parameters
 - [**hyperparams.py**](https://github.com/dayyass/text-classification-baseline/blob/main/hyperparams.py) - sklearn **GridSearchCV** parameters
@@ -62,6 +62,7 @@ Default **config.yaml**:
 ```yaml
 seed: 42
 path_to_save_folder: models
+experiment_name: model
 
 # data
 data:
@@ -70,6 +71,11 @@ data:
   sep: ','
   text_column: text
   target_column: target_name_short
+
+# preprocessing
+# (included in resulting model pipeline, so preserved for inference)
+preprocessing:
+  lemmatization: null  # pymorphy2
 
 # tf-idf
 tf-idf:
@@ -96,7 +102,7 @@ grid-search:
 
 **NOTE**: `tf-idf` and `logreg` are sklearn [**TfidfVectorizer**](https://scikit-learn.org/stable/modules/generated/sklearn.feature_extraction.text.TfidfVectorizer.html?highlight=tfidf#sklearn.feature_extraction.text.TfidfVectorizer) and [**LogisticRegression**](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html) parameters correspondingly, so you can parameterize instances of these classes however you want. The same logic applies to `grid-search` which is sklearn [**GridSearchCV**](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html#sklearn.model_selection.GridSearchCV) parametrized with [**hyperparams.py**](https://github.com/dayyass/text-classification-baseline/blob/main/hyperparams.py).
 
-#### Output
+### Output
 After training the model, the pipeline will return the following files:
 - `model.joblib` - sklearn pipeline with TF-IDF and LogReg steps
 - `target_names.json` - mapping from encoded target labels from *0* to *n_classes-1* to it names
@@ -104,10 +110,21 @@ After training the model, the pipeline will return the following files:
 - `hyperparams.py` - grid-search parameters (if grid-search was used)
 - `logging.txt` - logging file
 
-### Requirements
+
+### Additional functions
+- `text_clf.token_frequency.get_token_frequency(path_to_config)` - <br> get token frequency of **train dataset** according to the config file parameters
+
+**Only for binary classifiers**:
+- `text_clf.pr_roc_curve.get_precision_recall_curve(path_to_model_folder)` - <br> get *precision* and *recall* metrics for precision-recall curve
+- `text_clf.pr_roc_curve.get_roc_curve(path_to_model_folder)` - <br> get *false positive rate (fpr)* and *true positive rate (tpr)* metrics for roc curve
+- `text_clf.pr_roc_curve.plot_precision_recall_curve(precision, recall)` - <br> plot *precision-recall curve*
+- `text_clf.pr_roc_curve.plot_roc_curve(fpr, tpr)` - <br> plot *roc curve*
+- `text_clf.pr_roc_curve.plot_precision_recall_f1_curves_for_thresholds(precision, recall, thresholds)` - <br> plot *precision*, *recall*, *f1-score* curves for probability thresholds
+
+## Requirements
 Python >= 3.6
 
-### Citation
+## Citation
 If you use **text-classification-baseline** in a scientific publication, we would appreciate references to the following BibTex entry:
 ```bibtex
 @misc{dayyass2021textclf,
