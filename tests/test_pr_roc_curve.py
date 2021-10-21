@@ -12,6 +12,7 @@ from text_clf.pr_roc_curve import (
     get_precision_recall_curve,
     get_roc_curve,
     plot_precision_recall_curve,
+    plot_precision_recall_f1_curves_for_thresholds,
     plot_roc_curve,
 )
 
@@ -73,9 +74,13 @@ class TestMetricCurves(unittest.TestCase):
             # plot
             display_pr = plot_precision_recall_curve(precision, recall)
             display_roc = plot_roc_curve(fpr, tpr)
+            display_prf = plot_precision_recall_f1_curves_for_thresholds(
+                precision, recall, thresholds_pr
+            )
 
             display_pr.plot()
             display_roc.plot()
+            display_prf.plot()
 
     @classmethod
     def tearDownClass(cls) -> None:
