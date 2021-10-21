@@ -7,6 +7,7 @@ import numpy as np
 from sklearn.metrics import (
     PrecisionRecallDisplay,
     RocCurveDisplay,
+    auc,
     precision_recall_curve,
     roc_curve,
 )
@@ -149,4 +150,6 @@ def plot_roc_curve(fpr: np.ndarray, tpr: np.ndarray) -> RocCurveDisplay:
         RocCurveDisplay: Sklearn display object.
     """
 
-    return RocCurveDisplay(fpr=fpr, tpr=tpr)
+    roc_auc = auc(fpr, tpr)
+
+    return RocCurveDisplay(fpr=fpr, tpr=tpr, roc_auc=roc_auc)
