@@ -3,7 +3,6 @@ import os
 from typing import Tuple
 
 import joblib
-import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.metrics import (
@@ -157,30 +156,73 @@ def plot_roc_curve(fpr: np.ndarray, tpr: np.ndarray) -> RocCurveDisplay:
     return RocCurveDisplay(fpr=fpr, tpr=tpr, roc_auc=roc_auc)
 
 
+class PrecisionRecallF1Display:
+    """Precision Recall F1 visualization."""
+
+    def __init__(
+        self,
+        precision: np.ndarray,
+        recall: np.ndarray,
+        thresholds: np.ndarray,
+        plot_f1: bool = True,
+    ) -> None:
+        """Init visualizer.
+
+        Args:
+            precision (np.ndarray): Precision for different thresholds.
+            recall (np.ndarray): Recall for different thresholds.
+            thresholds (np.ndarray): Thresholds.
+            plot_f1 (bool): Plot F1 or not. Defaults to True.
+        """
+
+        self.precision = precision
+        self.recall = recall
+        self.thresholds = thresholds
+
+        self.plot_f1 = plot_f1
+
+        if plot_f1:
+            self.f1_score = 2 * precision * recall / (precision + recall)
+
+    def plot(self):
+        """Plot visualization."""
+
+        _, ax = plt.subplots()
+
+        ax.plot(self.thresholds, self.precision[:-1], label="precision")
+        ax.plot(self.thresholds, self.recall[:-1], label="recall")
+
+        if self.plot_f1:
+            ax.plot(self.thresholds, self.f1_score[:-1], label="f1-score")
+
+        ax.set(xlabel="Threshold", ylabel="Metrics")
+        ax.legend()
+        ax.grid()
+
+        self.ax_ = ax
+        self.figure_ = ax.figure
+
+        return self
+
+
 def plot_precision_recall_f1_curves_for_thresholds(
-    precision: np.ndarray, recall: np.ndarray, thresholds: np.ndarray
-) -> matplotlib.axes.Axes:
-    # TODO
+    precision: np.ndarray,
+    recall: np.ndarray,
+    thresholds: np.ndarray,
+    plot_f1: bool = True,
+) -> PrecisionRecallF1Display:
     """Plot precision, recall, f1 curves for thresholds.
 
     Args:
         precision (np.ndarray): Precision for different thresholds.
         recall (np.ndarray): Recall for different thresholds.
         thresholds (np.ndarray): Thresholds.
+        plot_f1 (bool): Plot F1 or not. Defaults to True.
 
     Returns:
-        matplotlib.axes.Axes: Matplotlib figure.
+        PrecisionRecallF1Display: Precision Recall F1 visualization.
     """
 
-    f1_score = 2 * precision * recall / (precision + recall)
-
-    _, ax = plt.subplots()
-
-    ax.plot(thresholds, precision[:-1], label="precision")
-    ax.plot(thresholds, recall[:-1], label="recall")
-    ax.plot(thresholds, f1_score[:-1], label="f1-score")
-
-    ax.set(xlabel="Threshold", ylabel="Precision / Recall / F1-score")
-    ax.legend()
-
-    return ax
+    return PrecisionRecallF1Display(
+        precision=precision, recall=recall, thresholds=thresholds, plot_f1=plot_f1
+    )
