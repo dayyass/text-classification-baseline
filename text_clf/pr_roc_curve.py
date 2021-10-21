@@ -17,6 +17,14 @@ from sklearn.pipeline import Pipeline
 from .config import get_config
 from .data import load_data
 
+__all__ = [
+    "get_precision_recall_curve",
+    "get_roc_curve",
+    "plot_precision_recall_curve",
+    "plot_roc_curve",
+    "plot_precision_recall_f1_curves_for_thresholds",
+]
+
 
 def _get_model_and_data(
     path_to_model_folder: str,

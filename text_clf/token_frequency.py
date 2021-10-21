@@ -7,6 +7,8 @@ from sklearn.feature_extraction.text import CountVectorizer
 from .config import get_config
 from .data import load_data
 
+__all__ = ["get_token_frequency"]
+
 
 def get_token_frequency(path_to_config: str) -> CounterType:
     """Get token frequency.
