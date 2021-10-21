@@ -17,4 +17,4 @@ pypi_twine:
 pypi_clean:
 	rm -rf dist text_classification_baseline.egg-info
 clean:
-	rm -rf models/model*
+	rm -rf models/*
