@@ -1,6 +1,6 @@
 [run]
 branch = True
-source = text_clf
+source = src/text_clf
 
 [report]
 exclude_lines =
@@ -12,7 +12,7 @@ exclude_lines =
     ...
 
 omit =
-    text_clf/__main__.py
+    src/text_clf/__main__.py
 
 show_missing = True
 ignore_errors = False

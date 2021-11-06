@@ -5,7 +5,7 @@ import unittest
 from parameterized import parameterized
 
 from data.load_20newsgroups import load_20newsgroups
-from text_clf import train
+from src.text_clf import train
 
 
 class TestUsage(unittest.TestCase):
@@ -16,6 +16,8 @@ class TestUsage(unittest.TestCase):
         """SetUp tests with data."""
 
         load_20newsgroups()
+
+        cls._remove_models_folder()
 
     @parameterized.expand(
         [
@@ -47,6 +49,12 @@ class TestUsage(unittest.TestCase):
     @classmethod
     def tearDownClass(cls) -> None:
         """tearDown tests with models remove."""
+
+        cls._remove_models_folder()
+
+    @staticmethod
+    def _remove_models_folder():
+        """Remove models folder."""
 
         path_to_models_folder = "tests/models"
         if os.path.exists(path_to_models_folder):
