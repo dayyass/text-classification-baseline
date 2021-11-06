@@ -2,7 +2,7 @@ import unittest
 
 from parameterized import parameterized
 
-from text_clf.lemmatizer import LemmatizerPymorphy2, Preprocessor
+from src.text_clf.lemmatizer import LemmatizerPymorphy2, Preprocessor
 
 
 class TestLemmatizer(unittest.TestCase):

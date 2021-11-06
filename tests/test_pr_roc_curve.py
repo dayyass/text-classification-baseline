@@ -7,8 +7,8 @@ from parameterized import parameterized
 from sklearn.metrics import auc
 
 from data.load_20newsgroups import load_20newsgroups
-from text_clf import train
-from text_clf.pr_roc_curve import (
+from src.text_clf import train
+from src.text_clf.pr_roc_curve import (
     get_precision_recall_curve,
     get_roc_curve,
     plot_precision_recall_curve,
@@ -26,9 +26,7 @@ class TestMetricCurves(unittest.TestCase):
 
         load_20newsgroups()
 
-        path_to_models_folder = "tests/models"
-        if os.path.exists(path_to_models_folder):
-            shutil.rmtree(path_to_models_folder)
+        cls._remove_models_folder()
 
         train(path_to_config="tests/config/config.yaml")
         train(path_to_config="tests/config/config_russian.yaml")
@@ -85,6 +83,12 @@ class TestMetricCurves(unittest.TestCase):
     @classmethod
     def tearDownClass(cls) -> None:
         """tearDown tests with models remove."""
+
+        cls._remove_models_folder()
+
+    @staticmethod
+    def _remove_models_folder():
+        """Remove models folder."""
 
         path_to_models_folder = "tests/models"
         if os.path.exists(path_to_models_folder):
